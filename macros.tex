@@ -1,0 +1,28 @@
+
+\usepackage{ifthen}
+\usepackage{scrextend}
+\usepackage{setspace}
+
+
+\newcommand{\nuevoTAD}[1]{\textbf{#1}\\}
+\newcommand{\nuevoTADas}[2]{\textbf{#1} as \textbf{#2}}
+\newcommand{\funcion}[3]{
+        \textbf{#1:} $#2 \rightarrow #3$\\
+}
+\newcommand{\genero}[1]{
+        \textbf{genero:} #1\\
+}
+\newcommand{\restriccion}[1]{
+    \begin{flushright}
+    ($#1$)
+    \end{flushright}
+}
+
+\newenvironment{seccion}[1][]
+{   
+    \textbf{#1:} \\
+    \begin{addmargin}[1em]{2em}
+}
+{
+    \end{addmargin}
+}

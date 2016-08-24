@@ -1,0 +1,29 @@
+
+
+Jugador:
+	Tiene posicion actual (float,float)? ambos positivos
+	posicion e mapa(juego)
+	capturarPokemon() //Distancia jugador<->pokemon <=2; debe esperar 10 movimientos de otros jugadores fuera de este rango.
+					  //Todos los que esten esperando a capturar este pokemon deben esperar los 10 movimientos. Si un nuevo jugador se 
+					  // mete al rango este contador se reinicia. Que pasa si uno sale?
+					  // Se elige quien lo captura con dameUno() de los elegibles
+
+	Conectarse() // Mantienen estado anterior salvo por posicion, que toma una nueva coordenada.
+	Desconectarse() // Nopueden realizar acciones
+	Moverse() // Esta coordenada debe ser "legal" (conectada a la anterior, <= 10 de distancia a la anterior)
+				// distancia = dist euclideana => sqrt( (a.x-b.x)² + (a.y -b.y)²) 
+				// Si el mov es invalido el jugador es sancionado. 5 o + sanciones => elinminado del juego, junto a sus pokemons
+
+Pokemon:
+	Tiene posicion actual (float,float)? ambos positivos
+	Tipo (str: Pikachu etc)
+	Debe mantener distancia >= 5 con todos los demas pokemon
+	Rareza() // P = 100 - ( cant pokemon de mi tipo / cant pokemon total )*100	
+			 // Los pokemon total son TODOS. Recordar que se eliminan al eliminar un jugador
+
+Juego:
+	generador mapa() => coordenadas validas y como se conectan entre si.
+	AgregarPokemon()
+	Nunca eleminar pokemons del mapa salvo que sean capturados
+	AgregarJugador() en cualquier momento
+

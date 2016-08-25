@@ -50,7 +50,7 @@ Juego:
 
 	Obs:
 		RarezaPokemon()
-	
+
 	Otras:
 		DistanciaCoords(c,c1)
 		HayCamino(c,c1)

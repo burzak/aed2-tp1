@@ -46,7 +46,7 @@ Juego:
 		AgregarJugador() en cualquier momento
 		MoverJugador()
 		CapturarPokemon()
-		ExpulsarJugador()
+		ExpulsarJugador() //Comportamiento automatico?
 
 	Obs:
 		RarezaPokemon()

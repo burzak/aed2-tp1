@@ -1,0 +1,16 @@
+\subsection{Mapa}
+\nuevoTAD{Mapa}
+\genero{Mapa}
+\begin{seccion}[generadores]
+	\funcion{crearMapa}{conj(conj(Coord)) c}{Mapa}
+	\restriccion{ ( \forall camino1,camino2 \in c )(camino1==camino2 \vee \neg ( \exists coord \in camino1 / \exists coord \in camino2)) }
+\end{seccion}
+
+\begin{seccion}[observadores]
+	\funcion{distancia}{Coord c \times Coord c1 \times Mapa}{Real}
+	\funcion{HayCamino}{Coord c \times Coord c1 \times Mapa}{bool}
+
+\end{seccion}
+
+\begin{seccion}[axiomas]
+\end{seccion}

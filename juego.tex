@@ -21,14 +21,10 @@
     \funcion{desconectar}{Jugador j \times Juego j' }{juego}
 	\restriccion { j \in jugadores(j') \wedge conectado?(j,j')}
 
-    \funcion{expulsar}{Jugador j \times Juego j'}{juego}
-	\restriccion { j \in jugadores(j') \wedge infraccionesDeJugador(j',j) > 5}
 \end{seccion}
 \begin{seccion}[observadores]
-    \funcion{movimientosGlobales}{juego}{sec(jugador \times pos)}
     \funcion{jugadores}{juego}{conj(jugador)}
-    \funcion{eliminado?}{juego g \times jugador j}{bool}
-	\restriccion{j \in jugadores(g) }
+    \funcion{jugadoresBanneados}{juego}{conj(string)}
 
     \funcion{conectado?}{juego g \times jugador j}{bool}
 	\restriccion{j \in jugadores(g)}
@@ -41,10 +37,6 @@
 \begin{seccion}[otras operaciones]
     \funcion{PokeRareza}{Juego j \times Pokemon p}{nat}
 	\restriccion{p \in poketotal(j)}
-
-	\funcion{infraccionesDeJugador}{Juego j \times jugador j'}{nat}
-	\restriccion{j' \in jugadores(j)}
-
 	\funcion{PokeTotales}{Juego j}{multiconj(Pokemons)}
 
 \end{seccion}

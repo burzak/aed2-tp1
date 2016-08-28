@@ -1,27 +1,30 @@
 \subsection{Juego}
 \nuevoTAD{Juego}
 \genero{juego}
+
 \begin{seccion}[generadores]
     \funcion{empezarJuego}{mapa}{juego}
-    \funcion{agregarJugador}{Juego j \times Jugador j'}{Juego}
-	\restriccion{j' \notin jugadores(j)}
+    \funcion{agregarJugador}{Jugador j \times Juego j'}{Juego}
+		\restriccion{j \notin jugadores(j') \wedge nombre(j) \notin jugadoresBanneados(j')}
 
     \funcion{agregarPoke}{Poke p \times coord c \times juego j}{juego}
 	\restriccion{c \in coords(j) \wedge ( \forall p' \in pokes(j))(distancia?(c, pokeCoord(p')) > 5)}
 
     \funcion{MoverJugador}{Jugador j \times Juego j' \times coord c}{juego}
-	\restriccion{c \in coords(j') \wedge j \in jugadores(j') \wedge  ¿¿ cviene del jugador ??}
+	\restriccion{c \in coords(j') \wedge j \in jugadores(j') }
 
     \funcion{capturar}{Jugador j \times Juego j' \times Poke p}{juego}
 	\restriccion{ j \in jugadores(j') \wedge p \in pokesLibres(j')}
 
     \funcion{conectar}{Jugador j \times Juego j' }{juego}
-	\restriccion { j \in jugadores(j') \wedge \not conectado?(j,j') \wedge coordenadas??}
+	\restriccion { j \in jugadores(j') \wedge \not conectado?(j,j')}
 
     \funcion{desconectar}{Jugador j \times Juego j' }{juego}
 	\restriccion { j \in jugadores(j') \wedge conectado?(j,j')}
 
 \end{seccion}
+
+
 \begin{seccion}[observadores]
     \funcion{jugadores}{juego}{conj(jugador)}
     \funcion{jugadoresBanneados}{juego}{conj(string)}
@@ -32,20 +35,63 @@
     \funcion{PokeLibres}{juego}{dicc(coord \times pokemon)}
     \funcion{PokeCapturados}{juego}{dicc(jugador \times multiconj(pokemon))}
     \funcion{mapa}{juego}{mapa}
-    
 \end{seccion}
+
+
 \begin{seccion}[otras operaciones]
     \funcion{PokeRareza}{Juego j \times Pokemon p}{nat}
 	\restriccion{p \in poketotal(j)}
 	\funcion{PokeTotales}{Juego j}{multiconj(Pokemons)}
-
+	\funcion{movimientoValido}{mapa m \times coords c1 \times coords c2}{bool}
 \end{seccion}
+
+
 \begin{seccion}[axiomas]
     \doublespacing
-    \funcion{alal}{}{nat}
-    \funcion{alal}{}{nat}
-    \funcion{alal}{}{nat}
+    \axioma{jugadoresBanneados(empezarJuego(m))}{[]}
+    \axioma{jugadoresBanneados(agregarJugador(j,j'))}{jugadoresBanneados(j')}
+    \axioma{jugadoresBanneados(agregarPoke(p,c,j))}{jugadoresBanneados(j')}
+    \axioma{jugadoresBanneados(MoverJugador(j,j',c))}{if movimientoValido(coords(j),c) then jugadoresBanneados(j') \newline
+													else if infracciones(j') <= 4 then jugadoresBanneados(j') \newline
+													else jugadoresBanneados(j') \cup nombre(j)}
+    \axioma{jugadoresBanneados(capturar(j,j',p))}{jugadoresBanneados(j')}
+    \axioma{jugadoresBanneados(conectar(j,j'))}{jugadoresBanneados(j')}
+    \axioma{jugadoresBanneados(desconectar(j,j'))}{jugadoresBanneados(j')}
+
+	$ \newline $
+    \axioma{jugadores(empezarJuego(m))}{0}
+    \axioma{jugadores(agregarJugador(j,j'))}{1234}
+    \axioma{jugadores(agregarPoke(p,c,j))}{1234}
+    \axioma{jugadores(MoverJugador(j,j',c))}{1234}
+    \axioma{jugadores(capturar(j,j',p))}{1234}
+    \axioma{jugadores(conectar(j,j'))}{1234}
+    \axioma{jugadores(desconectar(j,j'))}{1234}
+
+	$ \newline $
+    \axioma{PokeLibres(empezarJuego(m))}{1234}
+    \axioma{PokeLibres(agregarJugador(j,j'))}{1234}
+    \axioma{PokeLibres(agregarPoke(p,c,j))}{1234}
+    \axioma{PokeLibres(MoverJugador(j,j',c))}{1234}
+    \axioma{PokeLibres(capturar(j,j',p))}{1234}
+    \axioma{PokeLibres(conectar(j,j'))}{1234}
+    \axioma{PokeLibres(desconectar(j,j'))}{1234}
+
+	$ \newline $
+    \axioma{PokeCapturados(empezarJuego(m))}{1234}
+    \axioma{PokeCapturados(agregarJugador(j,j'))}{1234}
+    \axioma{PokeCapturados(agregarPoke(p,c,j))}{1234}
+    \axioma{PokeCapturados(MoverJugador(j,j',c))}{1234}
+    \axioma{PokeCapturados(capturar(j,j',p))}{1234}
+    \axioma{PokeCapturados(conectar(j,j'))}{1234}
+    \axioma{PokeCapturados(desconectar(j,j'))}{1234}
+
+	$ \newline $
+    \axioma{obs(empezarJuego(m))}{1234}
+    \axioma{obs(agregarJugador(j,j'))}{1234}
+    \axioma{obs(agregarPoke(p,c,j))}{1234}
+    \axioma{obs(MoverJugador(j,j',c))}{1234}
+    \axioma{obs(capturar(j,j',p))}{1234}
+    \axioma{obs(conectar(j,j'))}{1234}
+    \axioma{obs(desconectar(j,j'))}{1234}
     \singlespacing
 \end{seccion}
-
-

@@ -1,12 +1,16 @@
 \subsection{Pokemon}
 \nuevoTAD{Pokemon}
 \genero{pokemon}
+\begin{seccion}[generadores]
+	\funcion{crear}{nat \times string}{pokemon}
+\end{seccion}
 \begin{seccion}[observadores]
     \funcion{tipo}{pokemon}{string}
-    \restriccion{oaeu}
     \funcion{id}{pokemon}{nat}
 \end{seccion}
-\begin{seccion}[otras operaciones]
+\begin{seccion}[axiomas]
+	\axioma{tipo(crear(id, tipo))}{tipo}
+	\axioma{tipo(crear(id, tipo))}{id}
 \end{seccion}
 
 

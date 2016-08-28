@@ -1,0 +1,21 @@
+\subsection{Coordenada}
+\nuevoTAD{Coordenada}
+\genero{coordenada}
+\begin{seccion}[generadores]
+	\funcion{crear}{nat \times\ nat}{coordenada}
+\end{seccion}
+
+\begin{seccion}[observadores]
+	\funcion{x}{coordenada}{nat}
+	\funcion{y}{coordenada}{nat}
+\end{seccion}
+
+\begin{seccion}[otras operaciones]
+	\funcion{distancia}{coordenada c1 \times coordenada c2 \times mapa m}{nat}
+\end{seccion}
+
+\begin{seccion}[axiomas]
+	\axioma{x(crear(nat lat, nat long))}{lat}
+	\axioma{y(crear(nat lat, nat long))}{long}
+	\axioma{distancia(c1, c2)}{sqrt( (x(c1)-x(c2))^2 + (y(c1)-y(c2))^2)}
+\end{seccion}

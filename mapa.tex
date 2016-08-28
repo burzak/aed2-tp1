@@ -1,16 +1,29 @@
 \subsection{Mapa}
 \nuevoTAD{Mapa}
-\genero{Mapa}
+\genero{mapa}
+\exporta{generadores, observadores, hayCamino, todasCoordenadas}
 \begin{seccion}[generadores]
-	\funcion{crearMapa}{conj(conj(Coord)) c}{Mapa}
-	\restriccion{ ( \forall camino1,camino2 \in c )(camino1==camino2 \vee \neg ( \exists coord \in camino1 talque \exists coord \in camino2)) }
+	\funcion{crearMapa}{conj(conj(coordenada))\, c}{Mapa}
+	\restriccion{ (\forall conj1, conj2 \in c)(conj1 == conj2 \vee conj1 \cap conj2 == \emptyset ) }
 \end{seccion}
 
 \begin{seccion}[observadores]
-	\funcion{distancia}{Coord c \times Coord c1 \times Mapa}{Real}
-	\funcion{HayCamino}{Coord c \times Coord c1 \times Mapa}{bool}
+	\funcion{coordenadas}{mapa}{conj(conj(coordenada))}
+\end{seccion}
 
+\begin{seccion}[otras operaciones]
+	\funcion{hayCamino}{coordenada c1 \times coordenada c2 \times mapa m}{bool}	
+		\restriccion{c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)}
+	\funcion{hayCaminoRecursion}{coordenada c1 \times coordenada c2 \times conj(conj(coordenada))}{bool}
+		\restriccion{c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)}
+	\funcion{todasCoordenadas}{mapa}{conj(coordenada)}
+	\funcion{todosCoordenadasAplanadas}{conj(conj(coordenada))}{conj(coordenada)}
 \end{seccion}
 
 \begin{seccion}[axiomas]
+	\axioma{coordenadas(crearMapa(c))}{c}
+	\axioma{hayCamino(c1, c2, m)}{hayCaminoRecursion(c1, c2, coordenadas(m))}
+	\axioma{hayCaminoRecursion(c1, c2, cc)}{if \emptyset ?(cc) then false else if \{c1, c2\} \subseteq dameUno(cc) then true else hayCaminoRecursion(c1, c2, sinUno(cc)) fi fi}
+	\axioma{todasCoordenadas(m)}{todasCoordenadasAplanadas(coordenadas(m))}
+	\axioma{todasCoordenadasAplanadas(c)}{if \emptyset ?(c) then \emptyset else dameUno(c) \bigcup todasCoordenadasAplanadas(sinUno(c)) fi}
 \end{seccion}

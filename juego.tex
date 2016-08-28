@@ -4,50 +4,149 @@
 
 \begin{seccion}[generadores]
     \funcion{empezarJuego}{mapa}{juego}
-    \funcion{agregarJugador}{Jugador j \times Juego j'}{Juego}
-		\restriccion{j \notin jugadores(j') \wedge nombre(j) \notin jugadoresBanneados(j')}
+    \funcion{agregarJugador}{juego g \times jugador j}{juego}
+		\restriccion{j \notin jugadores(g) \wedge j \notin jugadoresBanneados(g)}
 
-    \funcion{agregarPoke}{Poke p \times coord c \times juego j}{juego}
-	\restriccion{c \in coords(j) \wedge ( \forall p' \in pokes(j))(distancia?(c, pokeCoord(p')) > 5)}
+    \funcion{agregarPokemon}{juego g \times pokemon p \times coordenada c}{juego}
+		\restriccion{c \in todasCoordenadas(mapa(g)) \wedge ( \forall p': pokemon, p' \in pokemonesLibres(g))(distancia(c, obtener(p', pokemonesLibres(g)) > 5) \wedge \neg def?(p, pokemonesLibres(g))}
 
-    \funcion{MoverJugador}{Jugador j \times Juego j' \times coord c}{juego}
-	\restriccion{c \in coords(j') \wedge j \in jugadores(j') }
+    \funcion{moverJugador}{juego g \times jugador j \times coordenada c}{juego}
+		\restriccion{c \in todasCoordenadas(mapa(g)) \wedge j \in jugadores(g) }
 
-    \funcion{capturar}{Jugador j \times Juego j' \times Poke p}{juego}
-	\restriccion{ j \in jugadores(j') \wedge p \in pokesLibres(j')}
+    \funcion{conectar}{juego g \times jugador j \times coordenada c }{juego}
+		\restriccion {j \in jugadores(g) \wedge \not conectado?(j, g) \wedge c \in todasCoordenadas(mapa(g)) }
 
-    \funcion{conectar}{Jugador j \times Juego j' }{juego}
-	\restriccion { j \in jugadores(j') \wedge \not conectado?(j,j')}
-
-    \funcion{desconectar}{Jugador j \times Juego j' }{juego}
-	\restriccion { j \in jugadores(j') \wedge conectado?(j,j')}
+    \funcion{desconectar}{juego g \times jugador j }{juego}
+		\restriccion {j \in jugadores(g) \wedge conectado?(j, g)}
 
 \end{seccion}
 
 
 \begin{seccion}[observadores]
-    \funcion{jugadores}{juego}{conj(jugador)}
-    \funcion{jugadoresBanneados}{juego}{conj(string)}
+    \funcion{jugadores}{juego}{dicc(jugador \times coordenada)}
+    \funcion{jugadoresBanneados}{juego}{conj(jugador)}
 
     \funcion{conectado?}{juego g \times jugador j}{bool}
-	\restriccion{j \in jugadores(g)}
+		\restriccion{j \in jugadores(g)}
 
-    \funcion{PokeLibres}{juego}{dicc(coord \times pokemon)}
-    \funcion{PokeCapturados}{juego}{dicc(jugador \times multiconj(pokemon))}
+    \funcion{pokemonesLibres}{juego}{dicc(pokemon \times coordenada)}
+    \funcion{pokemonesCapturados}{juego}{dicc(jugador \times conj(pokemon))}
     \funcion{mapa}{juego}{mapa}
+
+	\funcion{sanciones}{juego g \times jugador j}{nat}
+	
+	\funcion{ultimos10Movimientos}{juego g}{secu(jugador \times coordenada)}
 \end{seccion}
 
 
 \begin{seccion}[otras operaciones]
-    \funcion{PokeRareza}{Juego j \times Pokemon p}{nat}
+	\funcion{jugadoresAlRededorPokemon}{juego g \times pokemon p}{conj(jugadores)}
+		\restriccion{def?(p, pokemonesLibres(g))}
+	\funcion{filtrarJugadoresAlRededor}{juego g \times pokemon p \times conj(jugadores))}{conj(jugadores)}
+	
+	
+
+	\funcion{pokemonCoordenada}{juego g \times pokemon p}{coordenada}
+	\funcion{pokemones}{mapa}{conj((pokemon, coordenada))}
+
+    \funcion{pokemonRareza}{juego g \times pokemon p}{nat}
 	\restriccion{p \in poketotal(j)}
 	\funcion{PokeTotales}{Juego j}{multiconj(Pokemons)}
 	\funcion{movimientoValido}{mapa m \times coords c1 \times coords c2}{bool}
+	
+	\funcion{darVuelta}{dict(pokemon \times coordenada)}{dict(coordenada \times pokemon)}
+
+	\funcion{borrarPokemones}{conj(pokemon) \times dict(pokemon \times coordenada)}{dict(pokemon \times coordena)}
+	\funcion{pokemonesAAtrapar}{juego g \times conj(pokemon) ps \times secu(jugador \times coordenada) m}{conj(pokemon)}
+	\funcion{filtrarMovimientos}{secu(jugador \times coordenada) \times coordenadas}{nat}
 \end{seccion}
 
 
 \begin{seccion}[axiomas]
     \doublespacing
+	\axioma{jugadoresAlRededorPokemon(g, p)}{filtrarJugadoresAlRededor(g, p, claves(jugadores(g)))}
+    \axioma{filtrarJugadoresAlRededor(g, p, js)}{
+    if \emptyset ?(js) then
+    		\emptyset
+    else
+    			if distancia?(obtener(p, pokemonesLibres(g)), obtener(dameUno(js), jugadores(g))) \leq 2 then
+    				dameUno(js) \bigcup filtrarJugadoresAlRededor(g, p, sinUno(js))
+    			else
+    				filtrarJugadoresAlRededor(g, p, sinUno(js))
+    			fi
+    	fi
+    	}
+    	
+    	\axioma{darVuelta(di)}{
+    		if \emptyset ?(claves(di))
+    		then vacio
+    		else
+    			definir(
+    				obtener(dameUno(claves(di), di),
+    				dameUno(claves(di)),
+    				darVuelta(borrar(dameUno(claves(di), di))
+    			)
+    		fi
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	\axioma{pokemonesLibres(empezarJuego())}{vacio}
+    	\axioma{pokemonesLibres(agregarJugador(g, j))}{pokemonesLibres(g)}
+    	\axioma{pokemonesLibres(agregarPokemon(g, p, c))}{definir(p, c, pokemonesLibres(g)}
+    	\axioma{pokemonesLibres(conectar(g, p, c))}{pokemonesLibres(g)}
+    	\axioma{pokemonesLibres(desconectar(g, p))}{pokemonesLibres(g)}
+    	\axioma{pokemonesLibres(moverJugador(g, j, c))} {
+		if \neg \emptyset ?pokemoneAAtrapar(g, claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) \circ <j, c>)
+			borrarPokemones(pokemonesAAtrapar(g, claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) \circ <j, c>), pokemonesLibres(g))
+		else
+			pokemonesLibres(g)
+		fi
+    	}
+    	
+    	% axiliares para pokemonesLibres
+    	\axioma{pokemonesAAtrapar(g, conj\_pokemones, movimientos)}{
+		if \emptyset ?(conj\_pokemones) then
+			\emptyset
+		else
+			if filtrarMovimientos(movimientos, obtener(dameUno(conj\_pokemones), pokemonesLibres(g)) \geq 10 \wedge jugadoresAlRededorPokemon(g, dameUno(conj\_pokemones)) \neq \emptyset then
+				Ag(dameUno(conj\_pokemones), pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos)
+			else
+				pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos)
+			fi
+		fi
+    	}
+    	
+    	\axioma{filtrarMovimientos(s, coord)}{
+		if vacia?(s) then
+			0
+		else
+			if distancia({\pi}_2(prim(s)), coord) > 2 then
+				1 + filtrarMovimientos(fin(s), coord)
+			else
+				filtrarMovimientos(fin(s), coord)
+			fi
+		fi
+    	}
+    	
+    	\axioma{borrarPokemones(conj\_pokemones, dic\_poke\_coord)}{
+		if \emptyset ?(conj\_pokemones) then
+			dic\_poke\_coord
+		else
+			if def?(dameUno(conj\_pokemones), dic\_poke\_coord) then
+				borrarPokemones(sinUno(conj\_pokemones), borrar(dameUno(conj\_pokemones), dic\_poke\_coord))
+			else
+				borrarPokemones(sinUno(conj\_pokemones), dic\_poke\_coord)
+			fi
+		fi
+    	}
+    	% fin auxiliares
+    	
+    	
+    
     \axioma{jugadoresBanneados(empezarJuego(m))}{[]}
     \axioma{jugadoresBanneados(agregarJugador(j,j'))}{jugadoresBanneados(j')}
     \axioma{jugadoresBanneados(agregarPoke(p,c,j))}{jugadoresBanneados(j')}

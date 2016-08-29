@@ -1,71 +1,61 @@
-\subsection{Juego}
-\nuevoTAD{Juego}
-\genero{juego}
+\section{TAD \tadNombre{Juego}}
 
-\begin{seccion}[generadores]
-    \funcion{empezarJuego}{mapa}{juego}
-    \funcion{agregarJugador}{juego g \times jugador j}{juego}
-		\restriccion{j \notin jugadores(g) \wedge j \notin jugadoresBanneados(g)}
-
-    \funcion{agregarPokemon}{juego g \times pokemon p \times coordenada c}{juego}
-		\restriccion{c \in todasCoordenadas(mapa(g)) \wedge ( \forall p': pokemon, p' \in pokemonesLibres(g))(distancia(c, obtener(p', pokemonesLibres(g)) > 5) \wedge \neg def?(p, pokemonesLibres(g))}
-
-    \funcion{moverJugador}{juego g \times jugador j \times coordenada c}{juego}
-		\restriccion{c \in todasCoordenadas(mapa(g)) \wedge j \in jugadores(g) }
-
-    \funcion{conectar}{juego g \times jugador j \times coordenada c }{juego}
-		\restriccion {j \in jugadores(g) \wedge \not conectado?(j, g) \wedge c \in todasCoordenadas(mapa(g)) }
-
-    \funcion{desconectar}{juego g \times jugador j }{juego}
-		\restriccion {j \in jugadores(g) \wedge conectado?(j, g)}
-
-\end{seccion}
+\begin{tad}{\tadNombre{Juego}}
+\tadGeneros{Juego}
 
 
-\begin{seccion}[observadores]
-    \funcion{jugadores}{juego}{dicc(jugador \times coordenada)}
-    \funcion{jugadoresBanneados}{juego}{conj(jugador)}
+	\tadGeneradores
+	\tadOperacion{crear}{ nat/lat, nat/long }{nat}{$lat > 0 \wedge long > 0$}
+    \tadOperacion{empezarJuego}{mapa}{juego}{}
+    \tadOperacion{agregarJugador}{juego/g, jugador/j}{juego}{$j \notin jugadores(g) \wedge j \notin jugadoresBanneados(g)$}
 
-    \funcion{conectado?}{juego g \times jugador j}{bool}
-		\restriccion{j \in jugadores(g)}
+    \tadOperacion{agregarPokemon}{juego/g, pokemon p, coordenada/c}{juego}{$c \in todasCoordenadas(mapa(g)) \wedge ( \forall p': pokemon, p' \in pokemonesLibres(g))(distancia(c, obtener(p', pokemonesLibres(g)) > 5) \wedge \neg def?(p, pokemonesLibres(g))$}
 
-    \funcion{pokemonesLibres}{juego}{dicc(pokemon \times coordenada)}
-    \funcion{pokemonesCapturados}{juego}{dicc(jugador \times conj(pokemon))}
-    \funcion{mapa}{juego}{mapa}
+    \tadOperacion{moverJugador}{juego/g,jugador/j, coordenada/c}{juego}{$c \in todasCoordenadas(mapa(g)) \wedge j \in jugadores(g)$}
 
-	\funcion{sanciones}{juego g \times jugador j}{nat}
+    \tadOperacion{conectar}{juego/g, jugador/j, coordenada/c }{juego}{$j \in jugadores(g) \wedge \neg conectado?(j, g) \wedge c \in todasCoordenadas(mapa(g)) $}
+
+    \tadOperacion{desconectar}{juego/g, jugador/j }{juego}{$j \in jugadores(g) \wedge conectado?(j, g)$}
+
+
+\tadObservadores
+    \tadOperacion{jugadores}{juego}{dicc(jugador, coordenada)}{}
+    \tadOperacion{jugadoresBanneados}{juego}{conj(jugador)}{}
+
+    \tadOperacion{conectado?}{juego/g, jugador/j}{bool}{$j \in jugadores(g)$}
+
+    \tadOperacion{pokemonesLibres}{juego}{dicc(pokemon, coordenada)}{}
+    \tadOperacion{pokemonesCapturados}{juego}{dicc(jugador, conj(pokemon))}{}
+    \tadOperacion{mapa}{juego}{mapa}{}
+
+	\tadOperacion{sanciones}{juego/g, jugador/j}{nat}{}
 	
-	\funcion{ultimos10Movimientos}{juego g}{secu(jugador \times coordenada)}
-\end{seccion}
+	\tadOperacion{ultimos10Movimientos}{juego/g}{secu(jugador, coordenada)}{}
 
 
-\begin{seccion}[otras operaciones]
-	\funcion{jugadoresAlRededorPokemon}{juego g \times pokemon p}{conj(jugadores)}
-		\restriccion{def?(p, pokemonesLibres(g))}
-	\funcion{filtrarJugadoresAlRededor}{juego g \times pokemon p \times conj(jugadores))}{conj(jugadores)}
+\tadOtrasOperaciones
+	\tadOperacion{jugadoresAlRededorPokemon}{juego/g, pokemon p}{conj(jugadores)}{def?(p, pokemonesLibres(g))}
+	\tadOperacion{filtrarJugadoresAlRededor}{juego/g, pokemon p, conj(jugadores))}{conj(jugadores)}{}
 	
 	
 
-	\funcion{pokemonCoordenada}{juego g \times pokemon p}{coordenada}
-	\funcion{pokemones}{mapa}{conj((pokemon, coordenada))}
+	\tadOperacion{pokemonCoordenada}{juego/g, pokemon p}{coordenada}{}
+	\tadOperacion{pokemones}{mapa}{conj((pokemon, coordenada))}{}
 
-    \funcion{pokemonRareza}{juego g \times pokemon p}{nat}
-	\restriccion{p \in poketotal(j)}
-	\funcion{PokeTotales}{Juego j}{multiconj(Pokemons)}
-	\funcion{movimientoValido}{mapa m \times coords c1 \times coords c2}{bool}
+    \tadOperacion{pokemonRareza}{juego/g, pokemon p}{nat}{$p \in poketotal(j)$}
+	\tadOperacion{PokeTotales}{Juego j}{multiconj(Pokemons)}{}
+	\tadOperacion{movimientoValido}{mapa m, coords c1, coords c2}{bool}{}
 	
-	\funcion{darVuelta}{dict(pokemon \times coordenada)}{dict(coordenada \times pokemon)}
+	\tadOperacion{darVuelta}{dict(pokemon, coordenada)}{dict(coordenada, pokemon)}{}
 
-	\funcion{borrarPokemones}{conj(pokemon) \times dict(pokemon \times coordenada)}{dict(pokemon \times coordena)}
-	\funcion{pokemonesAAtrapar}{juego g \times conj(pokemon) ps \times secu(jugador \times coordenada) m}{conj(pokemon)}
-	\funcion{filtrarMovimientos}{secu(jugador \times coordenada) \times coordenadas}{nat}
-\end{seccion}
+	\tadOperacion{borrarPokemones}{conj(pokemon), dict(pokemon, coordenada)}{dict(pokemon, coordena)}{}
+	\tadOperacion{pokemonesAAtrapar}{juego/g, conj(pokemon) ps, secu(jugador, coordenada) m}{conj(pokemon)}{}
+	\tadOperacion{filtrarMovimientos}{secu(jugador, coordenada), coordenadas}{nat}{}
 
+\tadAxiomas[\paratodo{Juego}{g}, \paratodo{Pokemon}{p}, \paratodo{Jugador}{j}]
+	\tadAxioma{jugadoresAlRededorPokemon(g, p)}{filtrarJugadoresAlRededor(g, p, claves(jugadores(g)))}
 
-\begin{seccion}[axiomas]
-    \doublespacing
-	\axioma{jugadoresAlRededorPokemon(g, p)}{filtrarJugadoresAlRededor(g, p, claves(jugadores(g)))}
-    \axioma{filtrarJugadoresAlRededor(g, p, js)}{
+    \tadAxioma{filtrarJugadoresAlRededor(g, p, js)}{$
     if \emptyset ?(js) then
     		\emptyset
     else
@@ -75,9 +65,9 @@
     				filtrarJugadoresAlRededor(g, p, sinUno(js))
     			fi
     	fi
-    	}
+    	$}
     	
-    	\axioma{darVuelta(di)}{
+    	\tadAxioma{darVuelta(di)}{$
     		if \emptyset ?(claves(di))
     		then vacio
     		else
@@ -87,28 +77,28 @@
     				darVuelta(borrar(dameUno(claves(di), di))
     			)
     		fi
-    	}
+    	$}
     	
     	
     	
     	
     	
     	
-    	\axioma{pokemonesLibres(empezarJuego())}{vacio}
-    	\axioma{pokemonesLibres(agregarJugador(g, j))}{pokemonesLibres(g)}
-    	\axioma{pokemonesLibres(agregarPokemon(g, p, c))}{definir(p, c, pokemonesLibres(g)}
-    	\axioma{pokemonesLibres(conectar(g, p, c))}{pokemonesLibres(g)}
-    	\axioma{pokemonesLibres(desconectar(g, p))}{pokemonesLibres(g)}
-    	\axioma{pokemonesLibres(moverJugador(g, j, c))} {
+    	\tadAxioma{pokemonesLibres(empezarJuego())}{$\emptyset$}
+    	\tadAxioma{pokemonesLibres(agregarJugador(g, j))}{pokemonesLibres(g)}
+    	\tadAxioma{pokemonesLibres(agregarPokemon(g, p, c))}{definir(p, c, pokemonesLibres(g)}
+    	\tadAxioma{pokemonesLibres(conectar(g, p, c))}{pokemonesLibres(g)}
+    	\tadAxioma{pokemonesLibres(desconectar(g, p))}{pokemonesLibres(g)}
+    	\tadAxioma{pokemonesLibres(moverJugador(g, j, c))} {$
 		if \neg \emptyset ?pokemoneAAtrapar(g, claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) \circ <j, c>)
 			borrarPokemones(pokemonesAAtrapar(g, claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) \circ <j, c>), pokemonesLibres(g))
 		else
 			pokemonesLibres(g)
 		fi
-    	}
+    	$}
     	
     	% axiliares para pokemonesLibres
-    	\axioma{pokemonesAAtrapar(g, conj\_pokemones, movimientos)}{
+    	\tadAxioma{pokemonesAAtrapar(g, conj\_pokemones, movimientos)}{$
 		if \emptyset ?(conj\_pokemones) then
 			\emptyset
 		else
@@ -118,9 +108,9 @@
 				pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos)
 			fi
 		fi
-    	}
+    	$}
     	
-    	\axioma{filtrarMovimientos(s, coord)}{
+    	\tadAxioma{filtrarMovimientos(s, coord)}{$
 		if vacia?(s) then
 			0
 		else
@@ -130,9 +120,9 @@
 				filtrarMovimientos(fin(s), coord)
 			fi
 		fi
-    	}
+    	$}
     	
-    	\axioma{borrarPokemones(conj\_pokemones, dic\_poke\_coord)}{
+    	\tadAxioma{borrarPokemones(conj\_pokemones, dic\_poke\_coord)}{$
 		if \emptyset ?(conj\_pokemones) then
 			dic\_poke\_coord
 		else
@@ -142,55 +132,54 @@
 				borrarPokemones(sinUno(conj\_pokemones), dic\_poke\_coord)
 			fi
 		fi
-    	}
+    	$}
     	% fin auxiliares
     	
     	
     
-    \axioma{jugadoresBanneados(empezarJuego(m))}{[]}
-    \axioma{jugadoresBanneados(agregarJugador(j,j'))}{jugadoresBanneados(j')}
-    \axioma{jugadoresBanneados(agregarPoke(p,c,j))}{jugadoresBanneados(j')}
-    \axioma{jugadoresBanneados(MoverJugador(j,j',c))}{if movimientoValido(coords(j),c) then jugadoresBanneados(j') \newline
+    \tadAxioma{jugadoresBanneados(empezarJuego(m))}{[]}
+    \tadAxioma{jugadoresBanneados(agregarJugador(j,j'))}{jugadoresBanneados(j')}
+    \tadAxioma{jugadoresBanneados(agregarPoke(p,c,j))}{jugadoresBanneados(j')}
+    \tadAxioma{jugadoresBanneados(MoverJugador(j,j',c))}{$if movimientoValido(coords(j),c) then jugadoresBanneados(j') \newline
 													else if infracciones(j') <= 4 then jugadoresBanneados(j') \newline
-													else jugadoresBanneados(j') \cup nombre(j)}
-    \axioma{jugadoresBanneados(capturar(j,j',p))}{jugadoresBanneados(j')}
-    \axioma{jugadoresBanneados(conectar(j,j'))}{jugadoresBanneados(j')}
-    \axioma{jugadoresBanneados(desconectar(j,j'))}{jugadoresBanneados(j')}
-
-	$ \newline $
-    \axioma{jugadores(empezarJuego(m))}{0}
-    \axioma{jugadores(agregarJugador(j,j'))}{1234}
-    \axioma{jugadores(agregarPoke(p,c,j))}{1234}
-    \axioma{jugadores(MoverJugador(j,j',c))}{1234}
-    \axioma{jugadores(capturar(j,j',p))}{1234}
-    \axioma{jugadores(conectar(j,j'))}{1234}
-    \axioma{jugadores(desconectar(j,j'))}{1234}
-
-	$ \newline $
-    \axioma{PokeLibres(empezarJuego(m))}{1234}
-    \axioma{PokeLibres(agregarJugador(j,j'))}{1234}
-    \axioma{PokeLibres(agregarPoke(p,c,j))}{1234}
-    \axioma{PokeLibres(MoverJugador(j,j',c))}{1234}
-    \axioma{PokeLibres(capturar(j,j',p))}{1234}
-    \axioma{PokeLibres(conectar(j,j'))}{1234}
-    \axioma{PokeLibres(desconectar(j,j'))}{1234}
-
-	$ \newline $
-    \axioma{PokeCapturados(empezarJuego(m))}{1234}
-    \axioma{PokeCapturados(agregarJugador(j,j'))}{1234}
-    \axioma{PokeCapturados(agregarPoke(p,c,j))}{1234}
-    \axioma{PokeCapturados(MoverJugador(j,j',c))}{1234}
-    \axioma{PokeCapturados(capturar(j,j',p))}{1234}
-    \axioma{PokeCapturados(conectar(j,j'))}{1234}
-    \axioma{PokeCapturados(desconectar(j,j'))}{1234}
-
-	$ \newline $
-    \axioma{obs(empezarJuego(m))}{1234}
-    \axioma{obs(agregarJugador(j,j'))}{1234}
-    \axioma{obs(agregarPoke(p,c,j))}{1234}
-    \axioma{obs(MoverJugador(j,j',c))}{1234}
-    \axioma{obs(capturar(j,j',p))}{1234}
-    \axioma{obs(conectar(j,j'))}{1234}
-    \axioma{obs(desconectar(j,j'))}{1234}
-    \singlespacing
-\end{seccion}
+													else jugadoresBanneados(j') \cup nombre(j)$}
+    \tadAxioma{jugadoresBanneados(capturar(j,j',p))}{jugadoresBanneados(j')}
+    \tadAxioma{jugadoresBanneados(conectar(j,j'))}{jugadoresBanneados(j')}
+    \tadAxioma{jugadoresBanneados(desconectar(j,j'))}{jugadoresBanneados(j')}
+%
+%	$ \newline $
+%    \tadAxioma{jugadores(empezarJuego(m))}{0}
+%    \tadAxioma{jugadores(agregarJugador(j,j'))}{1234}
+%    \tadAxioma{jugadores(agregarPoke(p,c,j))}{1234}
+%    \tadAxioma{jugadores(MoverJugador(j,j',c))}{1234}
+%    \tadAxioma{jugadores(capturar(j,j',p))}{1234}
+%    \tadAxioma{jugadores(conectar(j,j'))}{1234}
+%    \tadAxioma{jugadores(desconectar(j,j'))}{1234}
+%
+%	$ \newline $
+%    \tadAxioma{PokeLibres(empezarJuego(m))}{1234}
+%    \tadAxioma{PokeLibres(agregarJugador(j,j'))}{1234}
+%    \tadAxioma{PokeLibres(agregarPoke(p,c,j))}{1234}
+%    \tadAxioma{PokeLibres(MoverJugador(j,j',c))}{1234}
+%    \tadAxioma{PokeLibres(capturar(j,j',p))}{1234}
+%    \tadAxioma{PokeLibres(conectar(j,j'))}{1234}
+%    \tadAxioma{PokeLibres(desconectar(j,j'))}{1234}
+%
+%	$ \newline $
+%    \tadAxioma{PokeCapturados(empezarJuego(m))}{1234}
+%    \tadAxioma{PokeCapturados(agregarJugador(j,j'))}{1234}
+%    \tadAxioma{PokeCapturados(agregarPoke(p,c,j))}{1234}
+%    \tadAxioma{PokeCapturados(MoverJugador(j,j',c))}{1234}
+%    \tadAxioma{PokeCapturados(capturar(j,j',p))}{1234}
+%    \tadAxioma{PokeCapturados(conectar(j,j'))}{1234}
+%    \tadAxioma{PokeCapturados(desconectar(j,j'))}{1234}
+%
+%    \tadAxioma{obs(empezarJuego(m))}{1234}
+%    \tadAxioma{obs(agregarJugador(j,j'))}{1234}
+%    \tadAxioma{obs(agregarPoke(p,c,j))}{1234}
+%    \tadAxioma{obs(MoverJugador(j,j',c))}{1234}
+%    \tadAxioma{obs(capturar(j,j',p))}{1234}
+%    \tadAxioma{obs(conectar(j,j'))}{1234}
+%    \tadAxioma{obs(desconectar(j,j'))}{1234}
+%    \singlespacing
+\end{tad}

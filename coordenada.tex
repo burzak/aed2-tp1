@@ -1,21 +1,28 @@
-\subsection{Coordenada}
-\nuevoTAD{Coordenada}
-\genero{coordenada}
-\begin{seccion}[generadores]
-	\funcion{crear}{nat \times\ nat}{coordenada}
-\end{seccion}
+\section{TAD \tadNombre{Coordenada}}
 
-\begin{seccion}[observadores]
-	\funcion{x}{coordenada}{nat}
-	\funcion{y}{coordenada}{nat}
-\end{seccion}
+\begin{tad}{\tadNombre{Coordenada}}
+\tadGeneros{coordenada}
+\tadExporta{generadores, observadores, distancia}
+\tadUsa{\tadNombre{nat}}
 
-\begin{seccion}[otras operaciones]
-	\funcion{distancia}{coordenada c1 \times coordenada c2 \times mapa m}{nat}
-\end{seccion}
+\tadIgualdadObservacional{n}{m}{nat}{$(n=0? \igobs m=0?)\ \yluego$\\ $(\neg(n=0?) \impluego (\text{pred}(n) \igobs \text{pred}(m)))$}
 
-\begin{seccion}[axiomas]
-	\axioma{x(crear(nat lat, nat long))}{lat}
-	\axioma{y(crear(nat lat, nat long))}{long}
-	\axioma{distancia(c1, c2)}{sqrt( (x(c1)-x(c2))^2 + (y(c1)-y(c2))^2)}
-\end{seccion}
+
+\tadAlinearFunciones{distancia}{coordenada, coordenada}
+\tadObservadores
+\tadOperacion{lat}{coordenada}{nat}{}
+\tadOperacion{long}{coordenada}{nat}{}
+
+\tadGeneradores
+\tadOperacion{crear}{ nat/lat, nat/long }{nat}{$lat > 0 \wedge long > 0$}
+
+\tadOtrasOperaciones
+\tadOperacion{distancia}{coordenada, coordenada}{nat}{}
+
+\tadAxiomas[\paratodo{nat}{n, m}, \paratodo{coordenada}{c1, c2}]
+\tadAlinearAxiomas{long(crear(n, m))}
+\tadAxioma{lat(crear(n, m))}{n}
+\tadAxioma{long(crear(n, m))}{m}
+\tadAxioma{distancia(c1, c2)}{$sqrt( (x(c1)-x(c2))^2 + (y(c1)-y(c2))^2)$}
+
+\end{tad}

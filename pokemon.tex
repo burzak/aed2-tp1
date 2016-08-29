@@ -1,16 +1,25 @@
-\subsection{Pokemon}
-\nuevoTAD{Pokemon}
-\genero{pokemon}
-\begin{seccion}[generadores]
-	\funcion{crear}{nat \times string}{pokemon}
-\end{seccion}
-\begin{seccion}[observadores]
-    \funcion{tipo}{pokemon}{string}
-    \funcion{id}{pokemon}{nat}
-\end{seccion}
-\begin{seccion}[axiomas]
-	\axioma{tipo(crear(id, tipo))}{tipo}
-	\axioma{tipo(crear(id, tipo))}{id}
-\end{seccion}
+\section{TAD \tadNombre{Pokemon}}
+
+\begin{tad}{\tadNombre{Pokemon}}
+\tadGeneros{pokemon}
+\tadExporta{bool, generadores, $\neg$, $\lor$, $\land$, $\implies$, $\oluego$, $\yluego$, $\impluego$}
+
+\tadIgualdadObservacionalSimple{$(true \igobs true) \land (false \igobs false) \land \neg(true \igobs false) \land \neg(false \igobs true)$}
+\tadAlinearFunciones{crear}{nat, string}{pokemon}
 
 
+\tadObservadores
+\tadOperacion{tipo}{pokemon}{string}{}
+\tadOperacion{id}{pokemon}{nat}{}
+
+
+\tadGeneradores
+\tadOperacion{crear}{nat, string}{pokemon}{}
+
+
+\tadAxiomas[\paratodo{nat}{id}, \paratodo{string}{tipo}]
+\tadAlinearAxiomas{tipo(crear($id$, $tipo$))}
+\tadAxioma{tipo(crear($id$, $tipo$))}{$tipo$}
+\tadAxioma{id(crear($id$, $tipo$))}{$id$}
+
+\end{tad}

@@ -1,29 +1,37 @@
-\subsection{Mapa}
-\nuevoTAD{Mapa}
-\genero{mapa}
-\exporta{generadores, observadores, hayCamino, todasCoordenadas}
-\begin{seccion}[generadores]
-	\funcion{crearMapa}{conj(conj(coordenada))\, c}{Mapa}
-	\restriccion{ (\forall conj1, conj2 \in c)(conj1 == conj2 \vee conj1 \cap conj2 == \emptyset ) }
-\end{seccion}
+\section{TAD \tadNombre{Mapa}}
 
-\begin{seccion}[observadores]
-	\funcion{coordenadas}{mapa}{conj(conj(coordenada))}
-\end{seccion}
+\begin{tad}{\tadNombre{Mapa}}
+\tadGeneros{mapa}
+\tadExporta{generadores, observadores, hayCamino, todasCoordenadas}
+\tadUsa{\tadNombre{conj}, \tadNombre{bool}}
 
-\begin{seccion}[otras operaciones]
-	\funcion{hayCamino}{coordenada c1 \times coordenada c2 \times mapa m}{bool}	
-		\restriccion{c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)}
-	\funcion{hayCaminoRecursion}{coordenada c1 \times coordenada c2 \times conj(conj(coordenada))}{bool}
-		\restriccion{c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)}
-	\funcion{todasCoordenadas}{mapa}{conj(coordenada)}
-	\funcion{todosCoordenadasAplanadas}{conj(conj(coordenada))}{conj(coordenada)}
-\end{seccion}
+\tadIgualdadObservacional{n}{m}{nat}{$(n=0? \igobs m=0?)\ \yluego$\\ $(\neg(n=0?) \impluego (\text{pred}(n) \igobs \text{pred}(m)))$}
 
-\begin{seccion}[axiomas]
-	\axioma{coordenadas(crearMapa(c))}{c}
-	\axioma{hayCamino(c1, c2, m)}{hayCaminoRecursion(c1, c2, coordenadas(m))}
-	\axioma{hayCaminoRecursion(c1, c2, cc)}{if \emptyset ?(cc) then false else if \{c1, c2\} \subseteq dameUno(cc) then true else hayCaminoRecursion(c1, c2, sinUno(cc)) fi fi}
-	\axioma{todasCoordenadas(m)}{todasCoordenadasAplanadas(coordenadas(m))}
-	\axioma{todasCoordenadasAplanadas(c)}{if \emptyset ?(c) then \emptyset else dameUno(c) \bigcup todasCoordenadasAplanadas(sinUno(c)) fi}
-\end{seccion}
+
+\tadAlinearFunciones{todosCoordenadasAplanadas}{coordenada/c1, coordenada/c2, conj(conj(coordenada))}
+\tadObservadores
+\tadOperacion{coordenadas}{mapa}{conj(conj(coordenada))}{}
+
+\tadGeneradores
+\tadOperacion{crearMapa}{ conj(conj(coordenada))/c }{mapa}{$\forall conj1, conj2 \in c)(conj1 == conj2 \vee conj1 \cap conj2 == \emptyset$}
+
+\tadOtrasOperaciones
+\tadOperacion{hayCamino}{coordenada/c1, coordenada/2, mapa/m}{bool}{$c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)$}
+\tadOperacion{hayCaminoRecursion}{coordenada/c1, coordenada/c2, conj(conj(coordenada))}{bool}{$c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)$}
+\tadOperacion{todasCoordenadas}{mapa}{conj(coordenada)}{}
+\tadOperacion{todosCoordenadasAplanadas}{conj(conj(coordenada))}{conj(coordenada)}{}
+
+\tadAxiomas[\paratodo{mapa}{m}, \paratodo{coordenada}{c1, c2}]
+\tadAlinearAxiomas{hayCaminoRecursion(c1, c2, cc)}
+\tadAxioma{coordenadas(crearMapa(c))}{c}
+
+\tadAxioma{hayCamino(c1, c2, m)}{hayCaminoRecursion(c1, c2, coordenadas(m))}
+
+\tadAxioma{hayCaminoRecursion(c1, c2, cc)}{$if \emptyset ?(cc) then false else if \{c1, c2\} \subseteq dameUno(cc) then true else hayCaminoRecursion(c1, c2, sinUno(cc)) fi fi$}
+
+\tadAxioma{todasCoordenadas(m)}{todasCoordenadasAplanadas(coordenadas(m))}
+
+\tadAxioma{todasCoordenadasAplanadas(c)}{$if \emptyset ?(c) then \emptyset else dameUno(c) \bigcup todasCoordenadasAplanadas(sinUno(c)) fi$}
+
+\end{tad}
+

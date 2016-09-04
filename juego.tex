@@ -38,10 +38,10 @@
 
 
 \tadOtrasOperaciones
-	\tadOperacion{jugadoresAlRededorPokemon}{juego/g, pokemon/p}{conj(jugadores)}{def?(p, pokemonesLibres(g))}
-	\tadOperacion{filtrarJugadoresAlRededor}{juego/g, pokemon/p, conj(jugadores)}{conj(jugadores)}{}
+	\tadOperacion{jugadoresAlRededorPokemon}{Juego/g, pokemon/p}{conj(jugadores)}{def?(p, pokemonesLibres(g))}
+	\tadOperacion{filtrarJugadoresAlRededor}{Juego/g, pokemon/p, conj(jugadores)}{conj(jugadores)}{}
 
-	\tadOperacion{pokemonCoordenada}{juego/g, pokemon/p}{coordenada}{}
+	\tadOperacion{pokemonCoordenada}{Juego/g, pokemon/p}{coordenada}{}
 	\tadOperacion{pokemones}{mapa}{conj((pokemon, coordenada))}{}
 
     \tadOperacion{pokemonRareza}{juego/g, pokemon/p}{nat}{$p \in poketotal(g)$}
@@ -53,7 +53,7 @@
 	\tadOperacion{borrarPokemones}{conj(pokemon), dict(pokemon, coordenada)}{dict(pokemon, coordena)}{}
 	\tadOperacion{pokemonesAAtrapar}{juego/g, conj(pokemon)/ps, secu(jugador, coordenada)/m}{conj(pokemon)}{}
 	\tadOperacion{filtrarMovimientos}{secu(jugador, coordenada), coordenadas}{nat}{}
-	\tadOperacion{estaEnInfraccion}{juego/g, jugador/j, coordenada/c}{bool}{j $\in$ jugadores(g) $\wedge$ c $\in$ todasCoordenadas(mapa(g))}
+	\tadOperacion{estaEnInfraccion}{Juego/g, jugador/j, coordenada/c}{bool}{j $\in$ jugadores(g) $\wedge$ c $\in$ todasCoordenadas(mapa(g))}
 
 \tadAxiomas[\paratodo{Juego}{g}, \paratodo{Pokemon}{p}, \paratodo{Jugador}{j, j'}, \paratodo{conj(Jugador)}{js}, \paratodo{Coordenada}{c}]
 	\tadAxioma{jugadores(empezarJuego(m))}{$\emptyset$}
@@ -77,7 +77,7 @@
 	\tadAxioma{posActualJugador(desconectar(g, j'), j)}{posActualJugador(g, j)}
 	
 	\tadAxioma{conectado?(agregarPokemon(g, p, c), j)}{conectado?(g, j)}
-	\tadAxioma{conectado?(moverJugador(g, j', c), j)}{conectado(g, j)}
+	\tadAxioma{conectado?(moverJugador(g, j', c), j)}{conectado?(g, j)}
 	\tadAxioma{conectado?(conectar(g, j', c), j)}{\IF\ j=j' THEN true ELSE conectado?(g, j) FI}
 	\tadAxioma{conectado?(desconectar(g, j), j')}{\IF\ j=j' THEN false ELSE conectado?(g, j) FI}	
 	
@@ -91,8 +91,22 @@
 	\tadAxioma{ultimos10Movimientos(empezarJuego(m))}{vacia}
 	\tadAxioma{ultimos10Movimientos(agregarJugador(g, j))}{ultimos10Movimientos(g)}
 	\tadAxioma{ultimos10Movimientos(agregarPokemon(g, p, c))}{ultimos10Movimientos(g)}
-	\tadAxioma{ultimos10Movimientos(moverJugador(g, j, c))}{if $long(ultimos10Movimientos(g)) < 10$) then ultimos10Movimientos $\argumento$ <j, c> else fin(ultimos10Movimientos(g)) $\argumento$ <j, c> fi}
-	\tadAxioma{ultimos10Movimientos(conectar(g, j, c))}{if $long(ultimos10Movimientos(g)) < 10$) then ultimos10Movimientos $\argumento$ <j, c> else fin(ultimos10Movimientos(g)) $\argumento$ <j, c> fi}
+
+	\tadAxioma{ultimos10Movimientos(moverJugador(g, j, c))}{
+		\IF $long(ultimos10Movimientos(g)) < 10$ THEN
+			ultimos10Movimientos(g) $\argumento$ <j, c>
+		ELSE
+			fin(ultimos10Movimientos(g)) $\argumento$ <j, c>
+		FI
+		}
+
+	\tadAxioma{ultimos10Movimientos(conectar(g, j, c))}{
+		\IF $long(ultimos10Movimientos(g)) < 10$ THEN
+			ultimos10Movimientos(g) $\argumento$ <j, c> 
+		ELSE 
+			fin(ultimos10Movimientos(g)) $\argumento$ <j, c>
+		FI
+		}
 	\tadAxioma{ultimos10Movimientos(desconectar(g, j))}{ultimos10Movimientos(g)}
 		
 	\tadAxioma{sanciones(aregarPokemon(g, p, c), j)}{sanciones(g, j)}

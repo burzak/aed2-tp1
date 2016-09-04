@@ -44,7 +44,7 @@
 	\tadOperacion{pokemonCoordenada}{juego/g, pokemon p}{coordenada}{}
 	\tadOperacion{pokemones}{mapa}{conj((pokemon, coordenada))}{}
 
-    \tadOperacion{pokemonRareza}{juego/g, pokemon p}{nat}{$p \in poketotal(g)$}
+    \tadOperacion{pokemonRareza}{juego/g, pokemon p}{nat}{$p \in pokemonesTotales(g)$}
 	\tadOperacion{pokemonesTotales}{Juego g}{conj(Pokemons)}{}
 	\tadOperacion{movimientoValido}{mapa m, coords c1, coords c2}{bool}{}
 	
@@ -145,8 +145,11 @@ $pokemonesLibres(g)$ FI}
     %auxiliares para pokemonesTotales
     \tadAxioma{capturados(g, cj)}{\IF\ $\emptyset$?(cj) THEN $\emptyset$ ELSE obtener(dameUno(cj), pokemonesCapturados(g)) $\cup$ capturados(g, sinUno(cj)) FI}
     %fin auxiliares para pokemonesTotales
-  
     
+    \tadAxioma{pokemonRareza(g, p)}{100 - (nPokesTipo(p, pokemonesTotales(g))/$\sharp$pokemonesTotales(g))$\ast$100}
+    %auxiliares para pokeRareza
+    \tadAxioma{nPokesTipo(cp, p)}{\IF\ $\emptyset$?(cp) THEN 0 ELSE{\IF\ genero(dameUno(cp)) = genero(p) THEN 1 + nPokesTipo(sinUno(cp), p) ELSE 0 + nPokesTipo(sinUno), p) FI} FI}
+    %fin auxiliares para pokeRareza
   
 
 \end{tad}

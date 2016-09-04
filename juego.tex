@@ -18,7 +18,7 @@ $(posActualJugador(g_1, j) \igobs posActualJugador(g_2, j) \wedge conectado?(g_1
 
 	\tadGeneradores
 
-\tadAlinearFunciones{agregarPokemon}{juego/g, pokemon/p, coordenada/c}
+\tadAlinearFunciones{pokemonesCapturados}{juego/g, jugador/j}
     \tadOperacion{empezarJuego}{mapa}{juego}{}
     \tadOperacion{agregarJugador}{juego/g, jugador/j}{juego}{$j \notin jugadores(g) \wedge j \notin jugadoresBanneados(g)$}
 
@@ -66,7 +66,10 @@ $(posActualJugador(g_1, j) \igobs posActualJugador(g_2, j) \wedge conectado?(g_1
 	\tadOperacion{nPokesTipo}{conj(pokemon)/cp, pokemon/p}{nat}{}
 	\tadOperacion{pokemonesACapturar}{juego/g, jugador/j, secu(<jugador, coordenada>) s, conj(pokemon) cp}{conj(pokemon)}{j $\in$ jugadores(g) $\wedge$ ($\forall$ x:s)(esta?(x, ultimos10Movimientos(g))) $\wedge$ cp $\subseteq$ claves(pokemonesLibres(g))}
 
+\newpage
+
 \tadAxiomas[\paratodo{Juego}{g}, \paratodo{Pokemon}{p}, \paratodo{Jugador}{j, j'}, \paratodo{conj(Jugador)}{js}, \paratodo{Coordenada}{c}, \paratodo{mapa}{m}, \paratodo{conj(pokemon)}{cp}, \paratodo{dicc(pokemon, coordenada)}{dcp}]
+\tadAlinearAxiomas{ultimos10Movimientos(agregarPokemon(g, p, c))}
 	\tadAxioma{jugadores(empezarJuego(m))}{$\emptyset$}
 	\tadAxioma{jugadores(agregarJugador(g, j))}{Ag(j, jugadores(g))}
 	\tadAxioma{jugadores(agregarPokemon(g, p, c))}{jugadores(g)}
@@ -146,11 +149,21 @@ ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
 		ELSE
 			pokemonesLibres(g)
 		FI}
+
+\tadAlinearAxiomas{pokemonesCapturados(agregarPokemon(g, p, c), j)}
+
 	\tadAxioma{pokemonesCapturados(agregarPokemon(g, p, c), j)}{pokemonesCapturados(g, j)}
 	\tadAxioma{pokemonesCapturados(moverJugador(g, j', c), j)}{\IF j=j' THEN pokemonesCapturados(g, j) ELSE pokemonesACapturar(g, j,  (fin(ultimos10Movimientos(g)) $\circ$ <j', c>), claves(pokemonesLibres(g)))) $\cup$ pokemonesCapturados(g, j) FI}
 	\tadAxioma{pokemonesCapturados(conectar(g, j', c), j)}{pokemonesCapturados(g, j)}
 	\tadAxioma{pokemonesCapturados(desconectar(g, j'), j)}{pokemonesCapturados(g, j)}
+
+\tadAlinearAxiomas{pokemonesACapturar(g, j, s, cp)}
+
 	\tadAxioma{pokemonesACapturar(g, j, s, cp)}{\IF $\emptyset$?(cp) THEN $\emptyset$ ELSE {\IF (filtrarMovimientos(s, obtener(DameUno(cp), pokemonesLibres(g)))$\geqslant$ 10 $\wedge$ j=DameUno(jugadoresAlRededorPokemon(g, DameUno(cp)))) THEN Ag(DameUno(cp), pokemonesACapturar(g, j, s, SinUno(cp))) ELSE pokemonesACapturar(g, j, s, SinUno(cp)) FI} FI}
+
+
+\tadAlinearAxiomas{pokemonesAAtrapar(g, cp, s)}
+
 	\tadAxioma{estaEnInfraccion(g, j, c)}{(distancia(c, posActualJugador(g, j))$\geqslant$ 10) $\vee$ $\neg$(hayCamino(c, posActualJugador(g, j), mapa(g)))}
     	
     	% axiliares para pokemonesLibres

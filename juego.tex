@@ -118,7 +118,9 @@ ELSE sanciones(g, j) FI} FI}
 	\tadAxioma{jugadoresAlRededorPokemon(g, p)}{filtrarJugadoresAlRededor(g, p, claves(jugadores(g)))}
     \tadAxioma{filtrarJugadoresAlRededor(g, p, js)}{%
     \IF\ $\emptyset?(js)$ THEN $\emptyset$ ELSE %
-    		{\IF\ (distancia?(obtener(p, pokemonesLibres(g)) ,obtener(dameUno(js), jugadores(g))) $\leq$ 2) THEN dameUno(js) $\bigcup$ filtrarJugadoresAlRededor(g, p, sinUno(js))
+    		{\IF\ (distancia?( \newline
+				obtener(p, pokemonesLibres(g)), \newline 
+				obtener(dameUno(js), jugadores(g))) $\leq$ 2) THEN dameUno(js) $\bigcup$ filtrarJugadoresAlRededor(g, p, sinUno(js))
 ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
 	FI}
     \tadAxioma{darVuelta(di)}{%
@@ -131,22 +133,24 @@ ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
     \tadAxioma{pokemonesLibres(agregarPokemon(g, p, c))}{definir(p, c, pokemonesLibres(g))}
     \tadAxioma{pokemonesLibres(conectar(g, p, c))}{pokemonesLibres(g)}
     \tadAxioma{pokemonesLibres(desconectar(g, p))}{pokemonesLibres(g)}
-    \tadAxioma{pokemonesLibres(moverJugador(g, j, c))}{%
-		\IF\ $\neg\emptyset?pokemoneAAtrapar(g, claves(pokemonesLibres(g)), $ \newline $fin(ultimos10Movimientos(g)) \argumento <j, c>)$ THEN %
-{$borrarPokemones(pokemonesAAtrapar(g, \newline claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) \argumento <j, c>), pokemonesLibres(g))$} ELSE%
-$pokemonesLibres(g)$ FI}
+    \tadAxioma{pokemonesLibres(moverJugador(g, j, c))}{
+		\IF\ $\neg\emptyset?$ pokemonesAAtrapar(g, claves(pokemonesLibres(g)), \newline fin(ultimos10Movimientos(g)) \argumento <j, c>) THEN
+			{borrarPokemones(pokemonesAAtrapar(g, \newline claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) \argumento <j, c>), pokemonesLibres(g))} 
+		ELSE
+			pokemonesLibres(g)
+		FI}
 
 	\tadAxioma{estaEnInfraccion(g, j, c)}{(distancia(c, posActualJugador(g, j))$\geqslant$ 10) $\vee$ $\neg$(hayCamino(c, posActualJugador(g, j), mapa(g)))}
     	
     	% axiliares para pokemonesLibres
-    \tadAxioma{pokemonesAAtrapar(g, conj\_pokemones, movimientos)}{
-    		\IF\ $\emptyset?(conj\_pokemones)$ THEN
+    \tadAxioma{pokemonesAAtrapar(g, cpoke, movimientos)}{
+    		\IF\ $\emptyset?(cpoke)$ THEN
     			$\emptyset$
     		ELSE 
-    			{\IF\ $filtrarMovimientos(movimientos, obtener(dameUno(conj\_pokemones), pokemonesLibres(g)) \geq 10 \wedge jugadoresAlRededorPokemon(g, dameUno(conj\_pokemones)) \neq \emptyset$ THEN
-    				Ag(dameUno(conj\_pokemones), pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos)
+    			{\IF\ $filtrarMovimientos(movimientos, obtener(dameUno(cpoke), pokemonesLibres(g)) \geq 10 \wedge jugadoresAlRededorPokemon(g, dameUno(cpoke)) \neq \emptyset$ THEN
+    				Ag(dameUno(cpoke), pokemonesAAtrapar(g, sinUno(cpoke), movimientos)
     			ELSE
-    				pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos)
+    				pokemonesAAtrapar(g, sinUno(cpoke), movimientos)
     			FI} 
     		FI
     }

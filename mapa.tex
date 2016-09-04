@@ -8,16 +8,16 @@
 \tadIgualdadObservacional{m_1}{m_2}{mapa}{$coordenadas(m_1) \igobs coordenadas(m_2)$}
 
 
-\tadAlinearFunciones{todosCoordenadasAplanadas}{coordenada/c1, coordenada/c2, conj(conj(coordenada))}
+\tadAlinearFunciones{todosCoordenadasAplanadas}{coordenada/c1, coordenada/c2, conj(conj(coordenada))/cc}
 \tadObservadores
-\tadOperacion{coordenadas}{mapa}{conj(conj(coordenada))}{}
+\tadOperacion{coordenadas}{mapa}{conj(conj(\newline coordenada))}{}
 
 \tadGeneradores
 \tadOperacion{crearMapa}{ conj(conj(coordenada))/c }{mapa}{$\forall conj1, conj2 \in c)((conj1 == conj2 \vee conj1 \cap conj2 == \emptyset)$}
 
 \tadOtrasOperaciones
 \tadOperacion{hayCamino}{coordenada/c1, coordenada/2, mapa/m}{bool}{$c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)$}
-\tadOperacion{hayCaminoRecursion}{coordenada/c1, coordenada/c2, conj(conj(coordenada))}{bool}{$c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)$}
+\tadOperacion{hayCaminoRecursion}{coordenada/c1, coordenada/c2, conj(conj(coordenada))/cc}{bool}{$c1 \in todasCoordenadasAplanadas(cc) \wedge c2 \in todasCoordenadasAplanadas(cc)$}
 \tadOperacion{todasCoordenadas}{mapa}{conj(coordenada)}{}
 \tadOperacion{todosCoordenadasAplanadas}{conj(conj(coordenada))}{conj(coordenada)}{}
 

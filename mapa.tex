@@ -3,9 +3,9 @@
 \begin{tad}{\tadNombre{Mapa}}
 \tadGeneros{mapa}
 \tadExporta{generadores, observadores, hayCamino, todasCoordenadas}
-\tadUsa{\tadNombre{conj}, \tadNombre{bool}}
+\tadUsa{\tadNombre{conj}, \tadNombre{bool}, \tadNombre{coordenada}}
 
-\tadIgualdadObservacional{n}{m}{nat}{$coordenadas(n) \igobs coordenadas(m)$}
+\tadIgualdadObservacional{m_1}{m_2}{mapa}{$coordenadas(m_1) \igobs coordenadas(m_2)$}
 
 
 \tadAlinearFunciones{todosCoordenadasAplanadas}{coordenada/c1, coordenada/c2, conj(conj(coordenada))}
@@ -13,7 +13,7 @@
 \tadOperacion{coordenadas}{mapa}{conj(conj(coordenada))}{}
 
 \tadGeneradores
-\tadOperacion{crearMapa}{ conj(conj(coordenada))/c }{mapa}{$\forall conj1, conj2 \in c)((conj1 == conj2 \vee conj1 \cap conj2 == \emptyset$)}
+\tadOperacion{crearMapa}{ conj(conj(coordenada))/c }{mapa}{$\forall conj1, conj2 \in c)((conj1 == conj2 \vee conj1 \cap conj2 == \emptyset)$}
 
 \tadOtrasOperaciones
 \tadOperacion{hayCamino}{coordenada/c1, coordenada/2, mapa/m}{bool}{$c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)$}

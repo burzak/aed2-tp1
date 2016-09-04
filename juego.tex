@@ -120,7 +120,7 @@ ELSE sanciones(g, j) FI} FI}
 	\tadAxioma{sanciones(conectar(g, j', c), j)}{sanciones(g, j)}
 	\tadAxioma{sanciones(desconectar(g, j'), j)}{sanciones(g, j)}
 
-	\tadAxioma{jugadoresAlRededorPokemon(g, p)}{filtrarJugadoresAlRededor(g, p, claves(jugadores(g)))}
+	\tadAxioma{jugadoresAlRededorPokemon(g, p)}{filtrarJugadoresAlRededor(g, p, jugadores(g))}
     \tadAxioma{filtrarJugadoresAlRededor(g, p, js)}{%
     \IF\ $\emptyset?(js)$ THEN $\emptyset$ ELSE %
     		{\IF\ (distancia?( \newline

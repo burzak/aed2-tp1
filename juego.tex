@@ -30,7 +30,7 @@
     \tadOperacion{conectado?}{juego/g, jugador/j}{bool}{$j \in jugadores(g)$}
 
     \tadOperacion{pokemonesLibres}{juego}{dicc(pokemon, coordenada)}{}
-    \tadOperacion{pokemonesCapturados}{juego}{dicc(jugador, conj(pokemon))}{}
+    \tadOperacion{pokemonesCapturados}{juego/g, jugador/j}{conj(pokemon)}{j $\in$ jugadores(g)}
     \tadOperacion{mapa}{juego}{mapa}{}
 
 	\tadOperacion{sanciones}{juego/g, jugador/j}{nat}{$j \in jugadores(g)$}
@@ -58,7 +58,7 @@
 	
 	\tadOperacion{capturados}{juego/g, conj(jugador)/cj}{conj(pokemon)}{cj $\subseteq$ jugadores(g)}
 	\tadOperacion{nPokesTipo}{conj(pokemon)/cp, pokemon/p}{nat}{}
-
+	\tadOperacion{pokemonesACapturar}{juego/g, jugador/j, secu(<jugador, coordenada>) s, conj(pokemon) cp}{conj(pokemon)}{j $\in$ jugadores(g) $\wedge$ ($\forall$ x:s)(esta?(x, ultimos10Movimientos(g))) $\wedge$ cp $\subseteq$ claves(pokemonesLibres(g))}
 
 \tadAxiomas[\paratodo{Juego}{g}, \paratodo{Pokemon}{p}, \paratodo{Jugador}{j, j'}, \paratodo{conj(Jugador)}{js}, \paratodo{Coordenada}{c}, \paratodo{mapa}{m}]
 	\tadAxioma{jugadores(empezarJuego(m))}{$\emptyset$}
@@ -144,7 +144,11 @@ ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
 		ELSE
 			pokemonesLibres(g)
 		FI}
-
+	\tadAxioma{pokemonesCapturados(agregarPokemon(g, p, c), j)}{pokemonesCapturados(g, j)}
+	\tadAxioma{pokemonesCapturados(moverJugador(g, j', c), j)}{\IF j=j' THEN pokemonesCapturados(g, j) ELSE pokemonesACapturar(g, j (fin(ultimos10Movimientos(g)) $\circ$ <j', c>), claves(pokemonesLibres(g))) $\cup$ pokemonesCapturados(g, j) FI}
+	\tadAxioma{pokemonesCapturados(conectar(g, j', c), j)}{pokemonesCapturados(g, j)}
+	\tadAxioma{pokemonesCapturados(desconectar(g, j'), j)}{pokemonesCapturados(g, j)}
+	\tadAxioma{pokemonesACapturar(g, j, s, cp)}{\IF $\emptyset$?(cp) THEN $\emptyset$ ELSE {\IF (filtrarMovimientos(s, obtener(DameUno(cp), pokemonesLibres(g)))$\geqslant$ 10 $\wedge$ j=DameUno(jugadoresAlRededorPokemon(g, DameUno(cp)))) THEN Ag(DameUno(cp), pokemonesACapturar(g, j, s, SinUno(cp))) ELSE pokemonesACapturar(g, j, s, SinUno(cp)) FI} FI}
 	\tadAxioma{estaEnInfraccion(g, j, c)}{(distancia(c, posActualJugador(g, j))$\geqslant$ 10) $\vee$ $\neg$(hayCamino(c, posActualJugador(g, j), mapa(g)))}
     	
     	% axiliares para pokemonesLibres
@@ -170,7 +174,7 @@ ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
     %fin auxiliares para pokemonesTotales
    
       
-	\tadAxioma{pokemonRareza(g, p)}{100 - (nPokesTipo(p, pokemonesTotales(g))/$\sharp$pokemonesTotales(g))$\ast$100}
+	\tadAxioma{pokemonRareza(g, p)}{100 - (nPokesTipo(pokemonesTotales(g), p)/$\sharp$pokemonesTotales(g))$\ast$100}
     %auxiliares para pokeRareza
 	\tadAxioma{nPokesTipo(cp, p)}{\IF\ $\emptyset$?(cp) THEN 0 ELSE{\IF\ genero(dameUno(cp)) = genero(p) THEN 1 + nPokesTipo(sinUno(cp), p) ELSE 0 + nPokesTipo(sinUno), p) FI} FI}
     %fin auxiliares para pokeRareza

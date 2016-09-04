@@ -2,10 +2,10 @@
 
 \begin{tad}{\tadNombre{Pokemon}}
 \tadGeneros{pokemon}
-\tadExporta{bool, generadores, $\neg$, $\lor$, $\land$, $\implies$, $\oluego$, $\yluego$, $\impluego$}
+\tadExporta{generadores, observadores básicos}
 
-\tadIgualdadObservacionalSimple{$(true \igobs true) \land (false \igobs false) \land \neg(true \igobs false) \land \neg(false \igobs true)$}
-\tadAlinearFunciones{crear}{nat, string}{pokemon}
+\tadIgualdadObservacionalSimple{$(\forall p_1,p_2:Pokemon)$ $(p_1\igobs p_2)$ $\Leftrightarrow$ $(tipo(p_1)\igobs tipo(p_2) \wedge id(p_1)\igobs id(p_2)$}
+
 
 
 \tadObservadores

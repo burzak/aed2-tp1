@@ -5,7 +5,7 @@
 \tadExporta{generadores, observadores, hayCamino, todasCoordenadas}
 \tadUsa{\tadNombre{conj}, \tadNombre{bool}}
 
-\tadIgualdadObservacional{n}{m}{nat}{$(n=0? \igobs m=0?)\ \yluego$\\ $(\neg(n=0?) \impluego (\text{pred}(n) \igobs \text{pred}(m)))$}
+\tadIgualdadObservacional{n}{m}{nat}{$coordenadas(n) \igobs coordenadas(m)$}
 
 
 \tadAlinearFunciones{todosCoordenadasAplanadas}{coordenada/c1, coordenada/c2, conj(conj(coordenada))}
@@ -13,7 +13,7 @@
 \tadOperacion{coordenadas}{mapa}{conj(conj(coordenada))}{}
 
 \tadGeneradores
-\tadOperacion{crearMapa}{ conj(conj(coordenada))/c }{mapa}{$\forall conj1, conj2 \in c)(conj1 == conj2 \vee conj1 \cap conj2 == \emptyset$}
+\tadOperacion{crearMapa}{ conj(conj(coordenada))/c }{mapa}{$\forall conj1, conj2 \in c)((conj1 == conj2 \vee conj1 \cap conj2 == \emptyset$)}
 
 \tadOtrasOperaciones
 \tadOperacion{hayCamino}{coordenada/c1, coordenada/2, mapa/m}{bool}{$c1 \in todasCoordenadas(m) \wedge c2 \in todasCoordenadas(m)$}
@@ -27,11 +27,11 @@
 
 \tadAxioma{hayCamino(c1, c2, m)}{hayCaminoRecursion(c1, c2, coordenadas(m))}
 
-\tadAxioma{hayCaminoRecursion(c1, c2, cc)}{$if \emptyset ?(cc) then false else if \{c1, c2\} \subseteq dameUno(cc) then true else hayCaminoRecursion(c1, c2, sinUno(cc)) fi fi$}
+\tadAxioma{hayCaminoRecursion(c1, c2, cc)}{if $\emptyset$?(cc) then false else if $\{c1, c2\}$ $\subseteq$ dameUno(cc) then true else hayCaminoRecursion(c1, c2, sinUno(cc)) fi fi}
 
 \tadAxioma{todasCoordenadas(m)}{todasCoordenadasAplanadas(coordenadas(m))}
 
-\tadAxioma{todasCoordenadasAplanadas(c)}{$if \emptyset ?(c) then \emptyset else dameUno(c) \bigcup todasCoordenadasAplanadas(sinUno(c)) fi$}
+\tadAxioma{todasCoordenadasAplanadas(c)}{if $\emptyset$?(c) then $\emptyset$ else dameUno(c) $\bigcup$ todasCoordenadasAplanadas(sinUno(c)) fi}
 
 \end{tad}
 

@@ -141,9 +141,9 @@ $pokemonesLibres(g)$ FI}
 (if def?(dameUno(conj\_pokemones), dic\_poke\_coord) then borrarPokemones(sinUno(conj\_pokemones), borrar(dameUno(conj\_pokemones), dic\_poke\_coord)) else borrarPokemones(sinUno(conj\_pokemones), dic\_poke\_coord) fi) fi}
     	% fin auxiliares
     	
-    \tadAxioma{pokemonesTotales(g)}{if vacio?(jugadores(g)) then $\emptyset$ else capturados(g, jugadores(g)) $\cup$ claves(pokemonesLibres(g) fi}
+    \tadAxioma{pokemonesTotales(g)}{capturados(g, jugadores(g)) $\cup$ claves(pokemonesLibres(g)}
     %auxiliares para pokemonesTotales
-    \tadAxioma{capturados(g, cj)}{if vacio?(cj) then $\emptyset$ else obtener(dameUno(cj), pokemonesCapturados(g)) $\cup$ capturados(g, sinUno(cj))}
+    \tadAxioma{capturados(g, cj)}{if vacio?(cj) then $\emptyset$ else obtener(dameUno(cj), pokemonesCapturados(g)) $\cup$ capturados(g, sinUno(cj)) fi}
     %fin auxiliares para pokemonesTotales
   
     

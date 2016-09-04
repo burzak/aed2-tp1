@@ -1,5 +1,9 @@
 \section{TAD \tadNombre{Juego}}
 
+En este TAD es donde concentramos la mayor parte de las funcionalidades del juego. Una de las decisiones importantes que tomamos fue considerar el capturar pokemones y el sancionar a un jugador (y por extensión, el expulsarlo) como comportamientos automáticos ligados principalmente al movimiento de los jugadores.
+Para evaluar la captura de un pokemon consideramos que todos los jugadores que estén a menos de 2 de distancia de un pokemon tienen que no moverse para poder atraparlo. Guardamos los diez últimos movimientos en una lista que se actualiza automáticamente con cada jugador que se mueve. En esta lista se guardan las coordenadas a las cuales se movieron y los jugadores que realizaron esos movimientos. Para que un pokemon pueda ser capturado, tiene que haber un jugador cerca suyo y tienen que haber diez movimientos por fuera del círculo de radio 2 en donde se encuentra, es decir: no tiene que haber ninguna coordenada a distancia 2 o menos del pokemon en la lista de ultimos10Movimientos.
+También consideramos cuando un jugador se conecta como un movimiento que se agrega a la lista de movimientos.
+
 \begin{tad}{\tadNombre{Juego}}
 \tadGeneros{Juego}
 \tadExporta{observadores basicos, generadores, pokemonRareza}

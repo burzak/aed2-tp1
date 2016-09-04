@@ -45,7 +45,7 @@
 	\tadOperacion{pokemones}{mapa}{conj((pokemon, coordenada))}{}
 
     \tadOperacion{pokemonRareza}{juego/g, pokemon p}{nat}{$p \in poketotal(g)$}
-	\tadOperacion{pokemonesTotales}{Juego j}{multiconj(Pokemons)}{}
+	\tadOperacion{pokemonesTotales}{Juego j}{conj(Pokemons)}{}
 	\tadOperacion{movimientoValido}{mapa m, coords c1, coords c2}{bool}{}
 	
 	\tadOperacion{darVuelta}{dict(pokemon, coordenada)}{dict(coordenada, pokemon)}{}

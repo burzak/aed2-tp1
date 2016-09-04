@@ -4,10 +4,17 @@
 \tadGeneros{Juego}
 \tadExporta{observadores basicos, generadores, pokemonRareza}
 \tadUsa{\tadNombre{conjunto}, \tadNombre{multiconjunto}, \tadNombre{nat}, \tadNombre{seccuencia}, \tadNombre{bool}, \tadNombre{coordenada}, \tadNombre{mapa}, \tadNombre{jugador}, \tadNombre{pokemon}}
-\tadIgualdadObservacional{g_1}{g_2}{juego}{$jugadores(g_1) \igobs jugadores(g_2) \wedge jugadoresBanneados(g_1) \igobs jugadoresBanneados(g_2) \wedge pokemonesLibres(g_1) \igobs pokemonesLibres(g_2) \wedge mapa(g_1) \igobs mapa(g_2) \wedge ultimos10Movimientos(g_1) \igobs ultimos10Movimientos(g_2) \wedge (\forall j:jugador)(j \in jugadores(g_1)) \impluego posActualJugador(g_1, j) \igobs posActualJugador(g_2, j) \wedge conectado?(g_1, j) \igobs conectado?(g_2, j) \wedge pokemonesCapturados(g_1, j) \igobs pokemonesCapturados(g_2, j) \wedge sanciones(g_1, j) \igobs sanciones(g_2, j)$}
+\tadIgualdadObservacional{g_1}{g_2}{juego}{%
+$jugadoresBanneados(g_1) \igobs jugadoresBanneados(g_2) \wedge \newline$%
+$pokemonesLibres(g_1) \igobs pokemonesLibres(g_2) \wedge \newline$%
+$mapa(g_1) \igobs mapa(g_2) \wedge \newline$%
+$ultimos10Movimientos(g_1) \igobs ultimos10Movimientos(g_2) \wedge \newline$%
+$(\forall j:jugador)(j \in jugadores(g_1) \wedge j \in jugadores(g_2)) \impluego \newline$%
+$(posActualJugador(g_1, j) \igobs posActualJugador(g_2, j) \wedge conectado?(g_1, j) \igobs conectado?(g_2, j) \wedge pokemonesCapturados(g_1, j) \igobs pokemonesCapturados(g_2, j) \wedge sanciones(g_1, j) \igobs sanciones(g_2, j))$}
 
 	\tadGeneradores
 
+\tadAlinearFunciones{agregarPokemon}{juego/g, pokemon/p, coordenada/c}
     \tadOperacion{empezarJuego}{mapa}{juego}{}
     \tadOperacion{agregarJugador}{juego/g, jugador/j}{juego}{$j \notin jugadores(g) \wedge j \notin jugadoresBanneados(g)$}
 
@@ -39,6 +46,7 @@
 
 
 \tadOtrasOperaciones
+\tadAlinearFunciones{jugadoresAlRededorPokemon}{Juego/g, pokemon/p, conj(jugadores)}
 	\tadOperacion{jugadoresAlRededorPokemon}{Juego/g, pokemon/p}{conj(jugadores)}{def?(p, pokemonesLibres(g))}
 	\tadOperacion{filtrarJugadoresAlRededor}{Juego/g, pokemon/p, conj(jugadores)}{conj(jugadores)}{}
 

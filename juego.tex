@@ -67,15 +67,15 @@
 	
 	  
     \tadAxioma{jugadoresBanneados(empezarJuego(m))}{$\emptyset$}
-    \tadAxioma{jugadoresBanneados(agregarJugador(g,j))}{jugadoresBanneados(j)}
+    \tadAxioma{jugadoresBanneados(agregarJugador(g,j))}{jugadoresBanneados(g)}
     \tadAxioma{jugadoresBanneados(agregarPokemon(g, j, c))}{jugadoresBanneados(g)}
     \tadAxioma{jugadoresBanneados(moverJugador(g, j, c))}{if(sanciones(g, j)+$\beta$(estaEnInfraccion(g, j, c)) $\geq$ 5) then Ag(j, jugadoresBanneados(g)) else jugadoresBanneados(g) fi}
     \tadAxioma{jugadoresBanneados(conectar(g, j, c))}{jugadoresBanneados(g)}
     \tadAxioma{jugadoresBanneados(desconectar(g, j))}{jugadoresBanneados(g)}
 	
 	\tadAxioma{posActualJugador(agregarPokemon(g, p, c), j)}{posActualJugador(g, j)}
-	\tadAxioma{posActualJugador(moverJugador(g, j', c), j)}{if j=j'then c else posActualJugador(g, j)}
-	\tadAxioma{posActualJugador(conectar(g, j', c), j)}{if j=j' then c else posActualJugador(g, j)}
+	\tadAxioma{posActualJugador(moverJugador(g, j', c), j)}{if j=j'then c else posActualJugador(g, j) fi}
+	\tadAxioma{posActualJugador(conectar(g, j', c), j)}{if j=j' then c else posActualJugador(g, j) fi}
 	\tadAxioma{posActualJugador(desconectar(g, j'), j)}{posActualJugador(g, j)}
 	
 	\tadAxioma{conectado?(agregarPokemon(g, p, c), j)}{conectado?(g, j)}

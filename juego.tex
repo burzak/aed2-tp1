@@ -45,7 +45,7 @@
 	\tadOperacion{pokemones}{mapa}{conj((pokemon, coordenada))}{}
 
     \tadOperacion{pokemonRareza}{juego/g, pokemon p}{nat}{$p \in poketotal(g)$}
-	\tadOperacion{pokemonesTotales}{Juego j}{conj(Pokemons)}{}
+	\tadOperacion{pokemonesTotales}{Juego g}{conj(Pokemons)}{}
 	\tadOperacion{movimientoValido}{mapa m, coords c1, coords c2}{bool}{}
 	
 	\tadOperacion{darVuelta}{dict(pokemon, coordenada)}{dict(coordenada, pokemon)}{}
@@ -141,7 +141,12 @@ $pokemonesLibres(g)$ FI}
 (if def?(dameUno(conj\_pokemones), dic\_poke\_coord) then borrarPokemones(sinUno(conj\_pokemones), borrar(dameUno(conj\_pokemones), dic\_poke\_coord)) else borrarPokemones(sinUno(conj\_pokemones), dic\_poke\_coord) fi) fi}
     	% fin auxiliares
     	
-    	
+    \tadAxioma{pokemonesTotales(g)}{if vacio?(jugadores(g)) then $\emptyset$ else capturados(g, jugadores(g)) $\cup$ claves(pokemonesLibres(g) fi}
+    %auxiliares para pokemonesTotales
+    \tadAxioma{capturados(g, cj)}{if vacio?(cj) then $\emptyset$ else obtener(dameUno(cj), pokemonesCapturados(g)) $\cup$ capturados(g, sinUno(cj))}
+    %fin auxiliares para pokemonesTotales
+  
+    
   
 
 \end{tad}

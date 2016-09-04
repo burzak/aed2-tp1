@@ -21,17 +21,17 @@
 \tadOperacion{todasCoordenadas}{mapa}{conj(coordenada)}{}
 \tadOperacion{todosCoordenadasAplanadas}{conj(conj(coordenada))}{conj(coordenada)}{}
 
-\tadAxiomas[\paratodo{mapa}{m}, \paratodo{coordenada}{c1, c2}]
-\tadAlinearAxiomas{hayCaminoRecursion(c1, c2, cc)}
+\tadAxiomas[\paratodo{mapa}{m}, \paratodo{coordenada}{c, c_1, c_2}, \paratodo{conj(conj(coordenada))}{cc}]
+\tadAlinearAxiomas{$hayCaminoRecursion(c_1, c_2, cc)$}
 \tadAxioma{coordenadas(crearMapa(c))}{c}
 
-\tadAxioma{hayCamino(c1, c2, m)}{hayCaminoRecursion(c1, c2, coordenadas(m))}
+\tadAxioma{hayCamino($c_1$, $c_2$, m)}{$hayCaminoRecursion(c_1, c_2, coordenadas(m))$}
 
-\tadAxioma{hayCaminoRecursion(c1, c2, cc)}{if $\emptyset$?(cc) then false else if $\{c1, c2\}$ $\subseteq$ dameUno(cc) then true else hayCaminoRecursion(c1, c2, sinUno(cc)) fi fi}
+\tadAxioma{hayCaminoRecursion($c_1$, $c_2$, cc)}{\IF\ $\emptyset?(cc)$ THEN false ELSE {\IF\ $\{c_1, c_2\} \subseteq dameUno(cc)$ THEN true ELSE $hayCaminoRecursion(c_1, c_2, sinUno(cc))$ FI} FI}
 
 \tadAxioma{todasCoordenadas(m)}{todasCoordenadasAplanadas(coordenadas(m))}
 
-\tadAxioma{todasCoordenadasAplanadas(c)}{if $\emptyset$?(c) then $\emptyset$ else dameUno(c) $\bigcup$ todasCoordenadasAplanadas(sinUno(c)) fi}
+\tadAxioma{todasCoordenadasAplanadas(c)}{\IF\ $\emptyset?(c)$ THEN $\emptyset$ ELSE $dameUno(c) \bigcup todasCoordenadasAplanadas(sinUno(c))$ FI}
 
 \end{tad}
 

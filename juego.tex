@@ -40,14 +40,12 @@
 \tadOtrasOperaciones
 	\tadOperacion{jugadoresAlRededorPokemon}{juego/g, pokemon p}{conj(jugadores)}{def?(p, pokemonesLibres(g))}
 	\tadOperacion{filtrarJugadoresAlRededor}{juego/g, pokemon p, conj(jugadores))}{conj(jugadores)}{}
-	
-	
 
 	\tadOperacion{pokemonCoordenada}{juego/g, pokemon p}{coordenada}{}
 	\tadOperacion{pokemones}{mapa}{conj((pokemon, coordenada))}{}
 
-    \tadOperacion{pokemonRareza}{juego/g, pokemon p}{nat}{$p \in poketotal(j)$}
-	\tadOperacion{PokeTotales}{Juego j}{multiconj(Pokemons)}{}
+    \tadOperacion{pokemonRareza}{juego/g, pokemon p}{nat}{$p \in poketotal(g)$}
+	\tadOperacion{pokemonesTotales}{Juego j}{multiconj(Pokemons)}{}
 	\tadOperacion{movimientoValido}{mapa m, coords c1, coords c2}{bool}{}
 	
 	\tadOperacion{darVuelta}{dict(pokemon, coordenada)}{dict(coordenada, pokemon)}{}
@@ -57,11 +55,11 @@
 	\tadOperacion{filtrarMovimientos}{secu(jugador, coordenada), coordenadas}{nat}{}
 	\tadOperacion{estaEnInfraccion}{juego g, jugador j, coordenada c}{bool}{j $\in$ jugadores(g) $\wedge$ c $\in$ todasCoordenadas(mapa(g))}
 
-\tadAxiomas[\paratodo{Juego}{g}, \paratodo{Pokemon}{p}, \paratodo{Jugador}{j}]
+\tadAxiomas[\paratodo{Juego}{g}, \paratodo{Pokemon}{p}, \paratodo{Jugador}{j, j'}, \paratodo{conj(Jugador)}{js}, \paratodo{Coordenada}{c}]
 	\tadAxioma{jugadores(empezarJuego(m))}{$\emptyset$}
 	\tadAxioma{jugadores(agregarJugador(g, j))}{Ag(j, jugadores(g))}
 	\tadAxioma{jugadores(agregarPokemon(g, p, c))}{jugadores(g)}
-	\tadAxioma{jugadores(moverJugador(g, j, c))}{if(sanciones(g, j)+$\beta$(estaEnInfraccion(g, j, c)) $\geq$ 5) then jugadores(g) - $\{j\}$ else jugadores(g) fi}
+	\tadAxioma{jugadores(moverJugador(g, j, c))}{\IF\ $(sanciones(g, j)+\beta(estaEnInfraccion(g, j, c)) \geq 5)$ THEN jugadores(g) - $\{j\}$ ELSE jugadores(g) FI}
 	\tadAxioma{jugadores(conectar(g , j, c))}{jugadores(g)}
 	\tadAxioma{jugadores(desconectar(g, j))}{jugadores(g)}
 	
@@ -69,19 +67,19 @@
     \tadAxioma{jugadoresBanneados(empezarJuego(m))}{$\emptyset$}
     \tadAxioma{jugadoresBanneados(agregarJugador(g,j))}{jugadoresBanneados(g)}
     \tadAxioma{jugadoresBanneados(agregarPokemon(g, j, c))}{jugadoresBanneados(g)}
-    \tadAxioma{jugadoresBanneados(moverJugador(g, j, c))}{if(sanciones(g, j)+$\beta$(estaEnInfraccion(g, j, c)) $\geq$ 5) then Ag(j, jugadoresBanneados(g)) else jugadoresBanneados(g) fi}
+    \tadAxioma{jugadoresBanneados(moverJugador(g, j, c))}{\IF\ $(sanciones(g, j)+\beta(estaEnInfraccion(g, j, c)) \geq 5)$ THEN Ag(j, jugadoresBanneados(g)) ELSE jugadoresBanneados(g) FI}
     \tadAxioma{jugadoresBanneados(conectar(g, j, c))}{jugadoresBanneados(g)}
     \tadAxioma{jugadoresBanneados(desconectar(g, j))}{jugadoresBanneados(g)}
 	
 	\tadAxioma{posActualJugador(agregarPokemon(g, p, c), j)}{posActualJugador(g, j)}
-	\tadAxioma{posActualJugador(moverJugador(g, j', c), j)}{if j=j'then c else posActualJugador(g, j) fi}
-	\tadAxioma{posActualJugador(conectar(g, j', c), j)}{if j=j' then c else posActualJugador(g, j) fi}
+	\tadAxioma{posActualJugador(moverJugador(g, j', c), j)}{\IF\ j=j' THEN c ELSE posActualJugador(g, j) FI}
+	\tadAxioma{posActualJugador(conectar(g, j', c), j)}{\IF\ j=j' THEN c ELSE posActualJugador(g, j) FI}
 	\tadAxioma{posActualJugador(desconectar(g, j'), j)}{posActualJugador(g, j)}
 	
 	\tadAxioma{conectado?(agregarPokemon(g, p, c), j)}{conectado?(g, j)}
 	\tadAxioma{conectado?(moverJugador(g, j', c), j)}{conectado(g, j)}
-	\tadAxioma{conectado?(conectar(g, j', c), j)}{if j=j' then true else conectado?(g, j)}
-	\tadAxioma{conectado?(desconectar(g, j), j')}{if j=j' then false else conectado?(g, j)}	
+	\tadAxioma{conectado?(conectar(g, j', c), j)}{\IF\ j=j' THEN true ELSE conectado?(g, j) FI}
+	\tadAxioma{conectado?(desconectar(g, j), j')}{\IF\ j=j' THEN false ELSE conectado?(g, j) FI}	
 	
 	\tadAxioma{mapa(empezarJuego(m))}{m}
 	\tadAxioma{mapa(agregarJugador(g, j))}{mapa(g)}
@@ -98,30 +96,46 @@
 	\tadAxioma{ultimos10Movimientos(desconectar(g, j))}{ultimos10Movimientos(g)}
 		
 	\tadAxioma{sanciones(aregarPokemon(g, p, c), j)}{sanciones(g, j)}
-	\tadAxioma{sanciones(moverJugador(g, j', c), j)}{if j$\neq$j' then sanciones(g, j) esle (if estaEnInfraccion(g, j, c) then 1 + sanciones(g, j)
-else sanciones(g, j) fi) fi}
+	\tadAxioma{sanciones(moverJugador(g, j', c), j)}{\IF\ $j \neq j'$ THEN sanciones(g, j) ELSE {\IF\ estaEnInfraccion(g, j, c) THEN 1 + sanciones(g, j)%
+ELSE sanciones(g, j) FI} FI}
 	\tadAxioma{sanciones(conectar(g, j', c), j)}{sanciones(g, j)}
 	\tadAxioma{sanciones(desconectar(g, j'), j)}{sanciones(g, j)}
 
-	\tadAxioma{jugadoresAlRededorPokemon(g, p}{filtrarJugadoresAlRededor(g, p, claves(jugadores(g)))}    
-    \tadAxioma{filtrarJugadoresAlRededor(g, p, js)}{if $\emptyset$?(js) then $\emptyset$ else (if (distancia?(obtener(p, pokemonesLibres(g)) ,obtener(dameUno(js), jugadores(g))) $\leq$ 2) then dameUno(js) $\bigcup$ filtrarJugadoresAlRededor(g, p, sinUno(js))
-else filtrarJugadoresAlRededor(g, p, sinUno(js)) fi) fi}
-    \tadAxioma{darVuelta(di)}{if $\emptyset$?(claves(di)) then vacio
-else definir(obtener(dameUno(claves(di), di), dameUno(claves(di)), darVuelta(borrar(dameUno(claves(di), di))) fi}
+	\tadAxioma{jugadoresAlRededorPokemon(g, p)}{filtrarJugadoresAlRededor(g, p, claves(jugadores(g)))}
+    \tadAxioma{filtrarJugadoresAlRededor(g, p, js)}{%
+    \IF\ $\emptyset?(js)$ THEN $\emptyset$ ELSE %
+    		{\IF\ (distancia?(obtener(p, pokemonesLibres(g)) ,obtener(dameUno(js), jugadores(g))) $\leq$ 2) THEN dameUno(js) $\bigcup$ filtrarJugadoresAlRededor(g, p, sinUno(js))
+ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
+	FI}
+    \tadAxioma{darVuelta(di)}{%
+    		\IF\ $\emptyset$?(claves(di)) THEN vacio %
+    		ELSE definir(obtener(dameUno(claves(di), di), dameUno(claves(di)), darVuelta(borrar(dameUno(claves(di), di))) %
+	    	FI%
+    	}
     \tadAxioma{pokemonesLibres(empezarJuego())}{$\emptyset$}
     \tadAxioma{pokemonesLibres(agregarJugador(g, j))}{pokemonesLibres(g)}
-    \tadAxioma{pokemonesLibres(agregarPokemon(g, p, c))}{definir(p, c, pokemonesLibres(g)}
+    \tadAxioma{pokemonesLibres(agregarPokemon(g, p, c))}{definir(p, c, pokemonesLibres(g))}
     \tadAxioma{pokemonesLibres(conectar(g, p, c))}{pokemonesLibres(g)}
     \tadAxioma{pokemonesLibres(desconectar(g, p))}{pokemonesLibres(g)}
-    \tadAxioma{pokemonesLibres(moverJugador(g, j, c))}{
-		if $\neg$ $\emptyset$?pokemoneAAtrapar(g, claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) $\circ$ <j, c>)
-borrarPokemones(pokemonesAAtrapar(g, claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) $\circ$ <j, c>), pokemonesLibres(g)) else
-pokemonesLibres(g) fi}
+    \tadAxioma{pokemonesLibres(moverJugador(g, j, c))}{%
+		\IF\ $\neg\emptyset?pokemoneAAtrapar(g, claves(pokemonesLibres(g)), $ \newline $fin(ultimos10Movimientos(g)) \argumento <j, c>)$ THEN %
+{$borrarPokemones(pokemonesAAtrapar(g, \newline claves(pokemonesLibres(g)), fin(ultimos10Movimientos(g)) \argumento <j, c>), pokemonesLibres(g))$} ELSE%
+$pokemonesLibres(g)$ FI}
 
 	\tadAxioma{estaEnInfraccion(g, j, c)}{(distancia(c, posActualJugador(g, j))$\geqslant$ 10) $\vee$ $\neg$(hayCamino(c, posActualJugador(g, j), mapa(g)))}
     	
     	% axiliares para pokemonesLibres
-    \tadAxioma{pokemonesAAtrapar(g, conj\_pokemones, movimientos)}{if $\emptyset$?(conj\_pokemones) then $\emptyset$ else (if (filtrarMovimientos(movimientos, obtener(dameUno(conj\_pokemones), pokemonesLibres(g)) $\geq$ 10 $\wedge$ jugadoresAlRededorPokemon(g, dameUno(conj\_pokemones)) $\neq$ $\emptyset$) then Ag(dameUno(conj\_pokemones), pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos) else pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos) fi) fi}
+    \tadAxioma{pokemonesAAtrapar(g, conj\_pokemones, movimientos)}{
+    		\IF\ $\emptyset?(conj\_pokemones)$ THEN
+    			$\emptyset$
+    		ELSE 
+    			{\IF\ $filtrarMovimientos(movimientos, obtener(dameUno(conj\_pokemones), pokemonesLibres(g)) \geq 10 \wedge jugadoresAlRededorPokemon(g, dameUno(conj\_pokemones)) \neq \emptyset$ THEN
+    				Ag(dameUno(conj\_pokemones), pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos)
+    			ELSE
+    				pokemonesAAtrapar(g, sinUno(conj\_pokemones), movimientos)
+    			FI} 
+    		FI
+    }
     \tadAxioma{filtrarMovimientos(s, coord)}{if vacia?(s) then 0 else (if distancia($\pi_2$(prim(s)), coord) $>$ 2 then 1 + filtrarMovimientos(fin(s), coord) else filtrarMovimientos(fin(s), coord) fi) fi}
     \tadAxioma{borrarPokemones(conj\_pokemones, dic\_poke\_coord)}{if $\emptyset$?(conj\_pokemones) then dic\_poke\_coord else
 (if def?(dameUno(conj\_pokemones), dic\_poke\_coord) then borrarPokemones(sinUno(conj\_pokemones), borrar(dameUno(conj\_pokemones), dic\_poke\_coord)) else borrarPokemones(sinUno(conj\_pokemones), dic\_poke\_coord) fi) fi}

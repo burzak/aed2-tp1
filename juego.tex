@@ -55,6 +55,10 @@
 	\tadOperacion{pokemonesAAtrapar}{juego/g, conj(pokemon)/ps, secu(jugador, coordenada)/m}{conj(pokemon)}{}
 	\tadOperacion{filtrarMovimientos}{secu(jugador, coordenada), coordenadas}{nat}{}
 	\tadOperacion{estaEnInfraccion}{Juego/g, jugador/j, coordenada/c}{bool}{j $\in$ jugadores(g) $\wedge$ c $\in$ todasCoordenadas(mapa(g))}
+	
+	\tadOperacion{capturados}{juego/g, conj(jugador)/cj}{conj(pokemon)}{cj $\subseteq$ jugadores(g)}
+	\tadOperacion{nPokesTipo}{conj(pokemon)/cp, pokemon/p}{nat}{}
+
 
 \tadAxiomas[\paratodo{Juego}{g}, \paratodo{Pokemon}{p}, \paratodo{Jugador}{j, j'}, \paratodo{conj(Jugador)}{js}, \paratodo{Coordenada}{c}, \paratodo{mapa}{m}]
 	\tadAxioma{jugadores(empezarJuego(m))}{$\emptyset$}
@@ -144,7 +148,7 @@ ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
 	\tadAxioma{estaEnInfraccion(g, j, c)}{(distancia(c, posActualJugador(g, j))$\geqslant$ 10) $\vee$ $\neg$(hayCamino(c, posActualJugador(g, j), mapa(g)))}
     	
     	% axiliares para pokemonesLibres
-    \tadAxioma{pokemonesAAtrapar(g, cpoke, movimientos)}{
+	\tadAxioma{pokemonesAAtrapar(g, cpoke, movimientos)}{
     		\IF\ $\emptyset?(cpoke)$ THEN
     			$\emptyset$
     		ELSE 
@@ -155,11 +159,21 @@ ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
     			FI} 
     		FI
     }
-    \tadAxioma{filtrarMovimientos(s, coord)}{\IF\ vacia?(s) THEN 0 ELSE {\IF\ distancia($\pi_2$(prim(s)), coord) $>$ 2 THEN 1 + filtrarMovimientos(fin(s), coord) ELSE filtrarMovimientos(fin(s), coord) FI} FI}
-    \tadAxioma{borrarPokemones(conj\_pokemones, dic\_poke\_coord)}{\IF\ $\emptyset$?(conj\_pokemones) THEN dic\_poke\_coord ELSE %
+	\tadAxioma{filtrarMovimientos(s, coord)}{\IF\ vacia?(s) THEN 0 ELSE {\IF\ distancia($\pi_2$(prim(s)), coord) $>$ 2 THEN 1 + filtrarMovimientos(fin(s), coord) ELSE filtrarMovimientos(fin(s), coord) FI} FI}
+	\tadAxioma{borrarPokemones(conj\_pokemones, dic\_poke\_coord)}{\IF\ $\emptyset$?(conj\_pokemones) THEN dic\_poke\_coord ELSE %
 {\IF\ def?(dameUno(conj\_pokemones), dic\_poke\_coord) THEN borrarPokemones(sinUno(conj\_pokemones), borrar(dameUno(conj\_pokemones), dic\_poke\_coord)) ELSE borrarPokemones(sinUno(conj\_pokemones), dic\_poke\_coord) FI} FI}
-    	% fin auxiliares
-    	
+  	% fin auxiliares
+
+	\tadAxioma{pokemonesTotales(g)}{capturados(g, jugadores(g)) $\cup$ claves(pokemonesLibres(g))}
+     %auxiliares para pokemonesTotales
+	\tadAxioma{capturados(g, cj)}{\IF\ $\emptyset$?(cj) THEN $\emptyset$ ELSE obtener(dameUno(cj), pokemonesCapturados(g)) $\cup$ capturados(g, sinUno(cj)) FI}
+    %fin auxiliares para pokemonesTotales
+   
+      
+	\tadAxioma{pokemonRareza(g, p)}{100 - (nPokesTipo(p, pokemonesTotales(g))/$\sharp$pokemonesTotales(g))$\ast$100}
+    %auxiliares para pokeRareza
+	\tadAxioma{nPokesTipo(cp, p)}{\IF\ $\emptyset$?(cp) THEN 0 ELSE{\IF\ genero(dameUno(cp)) = genero(p) THEN 1 + nPokesTipo(sinUno(cp), p) ELSE 0 + nPokesTipo(sinUno), p) FI} FI}
+    %fin auxiliares para pokeRareza
     	
   
 

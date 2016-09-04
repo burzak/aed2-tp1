@@ -49,8 +49,6 @@
 	\tadOperacion{pokemonesTotales}{Juego/j}{multiconj(Pokemons)}{}
 	\tadOperacion{movimientoValido}{mapa/m, coords/c1, coords/c2}{bool}{}
 	
-	\tadOperacion{darVuelta}{dict(pokemon, coordenada)}{dict(coordenada, pokemon)}{}
-
 	\tadOperacion{borrarPokemones}{conj(pokemon), dict(pokemon, coordenada)}{dict(pokemon, coordena)}{}
 	\tadOperacion{pokemonesAAtrapar}{juego/g, conj(pokemon)/ps, secu(jugador, coordenada)/m}{conj(pokemon)}{}
 	\tadOperacion{filtrarMovimientos}{secu(jugador, coordenada), coordenadas}{nat}{}
@@ -128,11 +126,7 @@ ELSE sanciones(g, j) FI} FI}
 				obtener(dameUno(js), jugadores(g))) $\leq$ 2) THEN dameUno(js) $\bigcup$ filtrarJugadoresAlRededor(g, p, sinUno(js))
 ELSE filtrarJugadoresAlRededor(g, p, sinUno(js)) FI}%
 	FI}
-    \tadAxioma{darVuelta(di)}{%
-    		\IF\ $\emptyset$?(claves(di)) THEN vacio %
-    		ELSE definir(obtener(dameUno(claves(di), di), dameUno(claves(di)), darVuelta(borrar(dameUno(claves(di), di))) %
-	    	FI%
-    	}
+
     \tadAxioma{pokemonesLibres(empezarJuego())}{$\emptyset$}
     \tadAxioma{pokemonesLibres(agregarJugador(g, j))}{pokemonesLibres(g)}
     \tadAxioma{pokemonesLibres(agregarPokemon(g, p, c))}{definir(p, c, pokemonesLibres(g))}

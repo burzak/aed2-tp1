@@ -7,6 +7,7 @@
 \usepackage{fancyhdr}
 \usepackage{latexsym}
 \usepackage{lastpage}
+\usepackage{caratula}
 \usepackage{aed2-symb,aed2-itef,aed2-tad}
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{calc}
@@ -56,14 +57,25 @@
 \title{Trabajo práctico 1: “PokemonGOArgentina”\\ \large Grupo: "Digimon stay"}
 
 \begin{document}
+% Estos comandos deben ir antes del \maketitle
+\materia{Algoritmos y Estructuras de Datos II} % obligatorio
+\submateria{Primer Cuatrimestre de 2014} % opcional
+\titulo{Trabajo Practico 1} % obligatorio
+\subtitulo{Especificacion} % opcional
+\grupo{Grupo 1} % opcional 
+
+\integrante{Integrante 1}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
+\integrante{Integrante 2}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
+\integrante{Integrante 3}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
+\integrante{Integrante 4}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
 
 %Pagina de titulo e indice
-\thispagestyle{empty}
+
 
 \maketitle
 \tableofcontents
 
-\newpage
+\pagebreak
 
 %TADS
 \input{jugador}

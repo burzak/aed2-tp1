@@ -7,7 +7,7 @@ También consideramos cuando un jugador se conecta como un movimiento que se agr
 \begin{tad}{\tadNombre{Juego}}
 \tadGeneros{Juego}
 \tadExporta{observadores basicos, generadores, pokemonRareza}
-\tadUsa{\tadNombre{conjunto}, \tadNombre{nat}, \tadNombre{seccuencia}, \tadNombre{bool}, \tadNombre{coordenada}, \tadNombre{mapa}, \tadNombre{jugador}, \tadNombre{pokemon}}
+\tadUsa{\tadNombre{conjunto}, \tadNombre{multiconjunto}, \tadNombre{nat}, \tadNombre{seccuencia}, \tadNombre{bool}, \tadNombre{coordenada}, \tadNombre{mapa}, \tadNombre{jugador}, \tadNombre{pokemon}}
 \tadIgualdadObservacional{g_1}{g_2}{juego}{%
 $jugadoresBanneados(g_1) \igobs jugadoresBanneados(g_2) \wedge \newline$%
 $pokemonesLibres(g_1) \igobs pokemonesLibres(g_2) \wedge \newline$%
@@ -56,7 +56,7 @@ $(posActualJugador(g_1, j) \igobs posActualJugador(g_2, j) \wedge conectado?(g_1
 
 
     \tadOperacion{pokemonRareza}{juego/g, pokemon/p}{nat}{$p \in poketotal(g)$}
-	\tadOperacion{pokemonesTotales}{Juego/j}{conj(Pokemons)}{}
+	\tadOperacion{pokemonesTotales}{Juego/j}{multiconj(Pokemons)}{}
 	\tadOperacion{borrarPokemones}{conj(pokemon), dict(pokemon, coordenada)}{dict(pokemon, coordena)}{}
 	\tadOperacion{pokemonesAAtrapar}{juego/g, conj(pokemon)/ps, secu(jugador, coordenada)/m}{conj(pokemon)}{}
 	\tadOperacion{filtrarMovimientos}{secu(jugador, coordenada), coordenadas}{nat}{}
